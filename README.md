@@ -77,4 +77,4 @@ When the command `~welcome` is issued, it reminds the user to follow welcome rul
 
 ...more.
 
-A big shout out to @Tinkerer and @Ludeeus for the requirements and testing :smile:
+A big shout out to [@Tinkerer](https://github.com/DubhAd/Home-AssistantConfig/) and [@Ludeeus](https://github.com/ludeeus) for the requirements and testing :smile:
