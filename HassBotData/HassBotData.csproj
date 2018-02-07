@@ -53,7 +53,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandManager.cs" />
-    <Compile Include="CommandStatsDTO.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Persistence.cs" />
     <Compile Include="PersistStats.cs" />
