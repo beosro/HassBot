@@ -29,12 +29,14 @@ namespace HassBotLib {
             }
             set {
                 _messagesProcessed++;
-                //PersistStats.SaveStats();
             }
         }
 
         private static readonly char PREFIX_1 = '~';
         private static readonly char PREFIX_2 = '.';
+        private static readonly string YAML_START = @"```yaml";
+        private static readonly string YAML_END = @"```";
+
         private static readonly string TOKEN = "token";
         private static readonly string MAX_LINE_LIMIT =
             "Attention!: Please use https://www.hastebin.com to share code that is more than 10-15 lines. You have been warned, {0}!\nPlease read rule #6 here <#331130181102206976>";
@@ -138,10 +140,13 @@ namespace HassBotLib {
             
             // Create a Command Context.
             var context = new SocketCommandContext(_client, message);
-            await ReactYamlValidity(message.Content, context);
+            await ReactToYaml(message.Content, context);
 
-            if (!Utils.validateNumberOfLines(message.Content))
+            if (!Utils.LineCountCheck(message.Content)) {
+                var poopEmoji = new Emoji("💩");
                 await message.Channel.SendMessageAsync(string.Format(MAX_LINE_LIMIT, context.User.Mention));
+                await context.Message.AddReactionAsync(poopEmoji);
+            }
 
             // Create a number to track where the prefix ends and the command begins
             int pos = 0;
@@ -166,34 +171,36 @@ namespace HassBotLib {
             else {
                 // Check the custom commands section before returning
                 string key = message.Content.Substring(1);
-                CommandDTO cmd = CommandManager.TheCommandManager.GetCommandByName(key);
+                string command = key.Split(' ')[0];
+                CommandDTO cmd = CommandManager.TheCommandManager.GetCommandByName(command);
 
                 if (cmd != null && cmd.CommandData != string.Empty) {
                     cmd.CommandCount += 1;
                     CommandManager.TheCommandManager.UpdateCommand(cmd);
+                    string mentionedUsers = string.Empty;
+                    foreach (var user in message.MentionedUsers) {
+                        mentionedUsers += $"{user.Mention} ";
+                    }
+                    if (mentionedUsers != string.Empty)
+                        await message.Channel.SendMessageAsync(mentionedUsers);
+
                     await message.Channel.SendMessageAsync(cmd.CommandData);
                 }
             }
         }
 
-        private async Task ReactYamlValidity(string content, SocketCommandContext context) {
-            if (!(content.Contains("```yaml") || content.Contains("```")))
+        private async Task ReactToYaml(string content, SocketCommandContext context) {
+            if (!(content.Contains(YAML_START) || content.Contains(YAML_END)))
                 return;
 
-            string START_YAML = "```yaml";
-            string START_YAML_1 = "```";
-            string END_YAML = "```";
+            int start = content.IndexOf(YAML_START);
+            int end = content.IndexOf(YAML_END, start+3);
 
-            int start = content.IndexOf(START_YAML);
-            if ( start == -1 )
-                start = content.IndexOf(START_YAML_1);
-
-            int end = content.IndexOf(END_YAML, start+3);
-            if (start == -1 && end == -1 && end == start)
+            if (start == -1 || end == -1 || end == start)
                 return;
 
-            string substring = content.Substring(start, (end - start));
             string errMsg = string.Empty;
+            string substring = content.Substring(start, (end - start));
             bool yamlCheck = ValidateYaml.Validate(substring, out errMsg);
             if (yamlCheck) {
                 var okEmoji = new Emoji("✅");

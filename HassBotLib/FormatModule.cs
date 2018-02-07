@@ -8,6 +8,7 @@ using Discord;
 using Discord.Commands;
 using System.Text;
 using System.Threading.Tasks;
+using System;
 
 namespace HassBotLib {
     public class FormatModule : BaseModule {
@@ -31,13 +32,26 @@ namespace HassBotLib {
 
         [Command("format")]
         public async Task FormatAsync() {
+            await FormatCommand();
+        }
+
+        [Command("format")]
+        public async Task FormatAsync([Remainder]string cmd) {
+            await FormatCommand();
+        }
+
+        private async Task FormatCommand() {
+
             Counter++;
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("To format your text as code, enter three backticks on the first line, press Shift+Enter for a new line, paste your code, press Shift + Enter again for another new line, and lastly three more backticks. Here's an example:\n");
+            sb.Append("To format your text as code, enter three backticks on the first line, press Enter for a new line, paste your code, press Enter again for another new line, and lastly three more backticks. Here's an example:\n");
             sb.Append("\\`\\`\\`yaml\n");
             sb.Append("code here\n");
             sb.Append("\\`\\`\\`\n");
+
+            // mention users if any
+            await base.MentionUsers();
 
             var embed = new EmbedBuilder();
             embed.WithTitle(":information_source:");

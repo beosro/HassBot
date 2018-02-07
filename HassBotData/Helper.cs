@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using log4net;
 using System.Reflection;
 
+using HassBotUtils;
 namespace HassBotData {
     public class Helper {
         private static readonly string ERR_DOWNLOADING =
@@ -31,8 +32,8 @@ namespace HassBotData {
 
         public static void DownloadSiteMap() {
             using (var client = new WebClient()) {
-                string sitemapUrl = ConfigurationManager.AppSettings["sitemapUrl"];
-                string sitemapPath = ConfigurationManager.AppSettings["sitemapPath"];
+                string sitemapUrl = AppSettingsUtil.AppSettingsString("sitemapUrl", true, string.Empty);
+                string sitemapPath = AppSettingsUtil.AppSettingsString("sitemapPath", true, string.Empty);
                 try {
                     client.DownloadFile(sitemapUrl, sitemapPath);
                     logger.Info(SITEMAP_UPDATED);

@@ -31,12 +31,24 @@ namespace HassBotLib {
 
         [Command("welcome")]
         public async Task WelcomeAsync() {
+            await WelcomeCommand();
+        }
+
+        [Command("welcome")]
+        public async Task WelcomeAsync([Remainder]string cmd) {
+            await WelcomeCommand();
+        }
+
+        private async Task WelcomeCommand() {
             Counter++;
 
             StringBuilder sb = new StringBuilder();
             sb.Append("Welcome to Home Asssistant Discord Channel. Please read <#331130181102206976> \n");
             sb.Append("For sharing code, please use https://www.hastebin.com\n");
             sb.Append("If it is less than 10 lines of code, **make sure** it is formatted using below format:\n\\`\\`\\`yaml\ncode\n\\`\\`\\`\n");
+
+            // mention users if any
+            await base.MentionUsers();
 
             var embed = new EmbedBuilder();
             embed.WithTitle("Welcome! :pray: ");

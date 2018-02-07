@@ -102,14 +102,17 @@ namespace HassBotLib {
                 await ReplyAsync("", false, embed);
             }
         }
+
+        // Quick and Dirty way of checking for Mod permissions. TBD 
         private bool CheckModPermissions() {
             if (Context.User.Username == "skalavala" ||
                 Context.User.Username == "arsaboo" ||
-                Context.User.Username == "tinkerer" ||
-                Context.User.Username == "vasiley" ||
+                Context.User.Username == "Tinkerer" ||
+                Context.User.Username == "Vasiley" ||
                 Context.User.Username == "dale3h" ||
                 Context.User.Username == "baloob" ||
                 Context.User.Username == "infamy" ||
+                Context.User.Username == "quadflight" ||
                 Context.User.Username == "ccostan" ||
                 Context.User.Username == "cogneato" ||
                 Context.User.Username == "Ludeeus" ||

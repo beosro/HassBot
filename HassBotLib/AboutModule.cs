@@ -39,10 +39,19 @@ namespace HassBotLib {
 
         [Command("about")]
         public async Task About() {
+            await AboutCommand();
+        }
+
+        [Command("about")]
+        public async Task About([Remainder]string cmd) {
+            await AboutCommand();
+        }
+
+        private async Task AboutCommand() {
             Counter++;
 
             var embed = new EmbedBuilder();
-            embed.WithTitle($"Hello, This is `{Context.Client.CurrentUser.Username}`, written by @skalavala \n");
+            embed.WithTitle("Hello! This is @HassBot, written by @skalavala \n");
             embed.WithColor(Helper.GetRandomColor());
             embed.AddInlineField("Up Since", $"{ GetUptime() }");
             embed.AddInlineField("Total Users", $"{Context.Client.Guilds.Sum(g => g.Users.Count)}");
@@ -50,6 +59,10 @@ namespace HassBotLib {
             embed.AddInlineField("Memory", $"{ GetMemoryUsage() }");
             embed.AddInlineField("Discord Lib Version", $"{ GetLibrary() }");
             embed.AddInlineField("Latency", $" { GetLatency() }");
+            embed.AddField("GitHub", "You can find the source code here https://github.com/skalavala/HassBot");
+
+            // mention users if any
+            await base.MentionUsers();
 
             await ReplyAsync(string.Empty, false, embed);
         }

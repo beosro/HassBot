@@ -30,6 +30,15 @@ namespace HassBotLib {
 
         [Command("share")]
         public async Task ShareAsync() {
+            await ShareCommand();
+        }
+
+        [Command("share")]
+        public async Task ShareAsync([Remainder]string cmd) {
+            await ShareCommand();
+        }
+
+        private async Task ShareCommand() {
             Counter++;
             string s = "Please use https://www.hastebin.com to share code.";
 
@@ -37,6 +46,15 @@ namespace HassBotLib {
             embed.WithTitle(":point_down: ");
             embed.WithColor(Color.DarkRed);
             embed.AddInlineField("Format Code:", s);
+
+            // mentioned users
+            string mentionedUsers = string.Empty;
+            foreach (var user in Context.Message.MentionedUsers) {
+                mentionedUsers += $"{user.Mention} ";
+            }
+            if (mentionedUsers != string.Empty)
+                await Context.Channel.SendMessageAsync(mentionedUsers);
+
             await ReplyAsync("", false, embed);
         }
     }

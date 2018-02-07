@@ -64,11 +64,16 @@ namespace HassBotLib {
 
             // additional logic, so that the 8Ball prediction doesn't repeat
             while (true) {
+                Context.Channel.EnterTypingState();
                 int r = rnd.Next(predictions.Count());
                 prediction = predictions[r];
                 if (previousPrediction != prediction)
                     break;
+                Context.Channel.EnterTypingState();
             }
+
+            // mention users if any
+            await base.MentionUsers();
 
             // update previous prediction
             previousPrediction = prediction;

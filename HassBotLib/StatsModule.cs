@@ -31,6 +31,15 @@ namespace HassBotLib {
 
         [Command("stats")]
         public async Task StatsAsync() {
+            await StatsCommand();
+        }
+
+        [Command("stats")]
+        public async Task StatsAsync([Remainder]string cmd) {
+            await StatsCommand();
+        }
+
+        private async Task StatsCommand() {
             Counter++;
 
             await Helper.PersistCounters();
@@ -49,9 +58,12 @@ namespace HassBotLib {
             embed.AddInlineField("Stats", StatsModule.Counter.ToString());
             embed.AddInlineField("Welcome", WelcomeModule.Counter.ToString());
             embed.AddInlineField("Update", UpdateModule.RefreshCounter.ToString());
-            //embed.AddInlineField("8Ball", Magic8BallModule.Counter.ToString());
+            embed.AddInlineField("8Ball", Magic8BallModule.Counter.ToString());
             embed.AddInlineField("New users", NewUser.NewUsers.ToString());
             embed.AddInlineField("Total Messages", HASSBot.MessagesProcessed.ToString());
+
+            // mention users if any
+            await base.MentionUsers();
 
             await ReplyAsync(string.Empty, false, embed);
         }

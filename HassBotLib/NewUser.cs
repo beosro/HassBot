@@ -4,6 +4,7 @@
 //  FILE            : NewUser.cs
 //  DESCRIPTION     : A class that contains "new user" stuff
 ///////////////////////////////////////////////////////////////////////////////
+using Discord;
 using Discord.WebSocket;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -21,7 +22,6 @@ namespace HassBotLib {
             }
             set {
                 _counter++;
-                //PersistStats.SaveStats();
             }
         }
 
@@ -58,7 +58,6 @@ namespace HassBotLib {
                 msgWithFunFact.Append($"\nFun Fact about {user.Mention}: ");
                 msgWithFunFact.Append(funFact);
                 msgWithFunFact.Append("\n");
-
                 await channel.SendMessageAsync(msgWithFunFact.ToString());
             }
         }

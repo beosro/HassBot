@@ -46,10 +46,17 @@ namespace HassBotLib {
 
         [Command("yaml?")]
         public async Task YamlAsync([Remainder]string cmd) {
+            await YamlCommand(cmd);
+        }
+
+        private async Task YamlCommand(string cmd) {
             Counter++;
 
             string errorMessage = string.Empty;
             bool result = ValidateYaml.Validate(cmd, out errorMessage);
+
+            // mention users if any
+            await base.MentionUsers();
 
             var embed = new EmbedBuilder();
             if (result == true) {

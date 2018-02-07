@@ -23,17 +23,6 @@ namespace HassBotData {
             File.WriteAllText(filePath, json);
         }
 
-        //public static Dictionary<string, string> LoadCommands(string filePath) {
-        //    if (!File.Exists(filePath)) return null;
-        //    string json = File.ReadAllText(filePath);
-        //    return JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-        //}
-
-        //public static void SaveCommands(Dictionary<string, string> commands, string filePath) {
-        //    string json = JsonConvert.SerializeObject(commands, Formatting.Indented);
-        //    File.WriteAllText(filePath, json);
-        //}
-
         public static Dictionary<string, int> LoadStats(string filePath) {
             if (!File.Exists(filePath)) return null;
             string json = File.ReadAllText(filePath);

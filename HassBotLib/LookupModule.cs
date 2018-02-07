@@ -25,10 +25,10 @@ namespace HassBotLib {
         }
 
         private static readonly string ERROR_USAGE =
-            "Usage: ~lookup <keyword>";
+            "Usage: ~lookup <keyword> <@ optional user>";
 
         private static readonly string DEEPSEARCH_USAGE =
-            "Usage: ~deepsearch <search string>";
+            "Usage: ~deepsearch <keyword>";
 
         public override string GetName() {
             return "lookup";
@@ -49,23 +49,17 @@ namespace HassBotLib {
             await ReplyAsync("", false, embed);
         }
 
-        [Command("deepsearch")]
-        public async Task DeepSearchAsync() {
-            Counter++;
-
-            var embed = new EmbedBuilder();
-            embed.WithTitle("Oooops! :thinking:");
-            embed.WithColor(Color.DarkRed);
-            embed.AddInlineField("Usage", DEEPSEARCH_USAGE);
-            await ReplyAsync("", false, embed);
+        [Command("lookup")]
+        public async Task LookupAsync([Remainder]string input) {
+            await LookupCommand(input);
         }
 
-        [Command("lookup")]
-        public async Task LookupAsync(string input) {
+        private async Task LookupCommand(string input) {
             Counter++;
 
             XmlDocument doc = Sitemap.SiteMapXmlDocument;
 
+            input = input.Split(' ')[0];
             StringBuilder sb = new StringBuilder();
             string fomatted_input = "/" + input + "/";
             foreach (XmlNode item in doc.DocumentElement.ChildNodes) {
@@ -89,7 +83,21 @@ namespace HassBotLib {
             else {
                 embed.WithColor(Helper.GetRandomColor());
                 embed.AddInlineField("Here is what I found: :smile:", sb.ToString());
+
+                // mention users if any
+                await base.MentionUsers();
             }
+            await ReplyAsync("", false, embed);
+        }
+
+        [Command("deepsearch")]
+        public async Task DeepSearchAsync() {
+            Counter++;
+
+            var embed = new EmbedBuilder();
+            embed.WithTitle("Oooops! :thinking:");
+            embed.WithColor(Color.DarkRed);
+            embed.AddInlineField("Usage", DEEPSEARCH_USAGE);
             await ReplyAsync("", false, embed);
         }
 

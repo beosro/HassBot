@@ -20,7 +20,7 @@ namespace HassBotUtils
         private static readonly log4net.ILog logger =
                     log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static bool validateNumberOfLines(string message) {
+        public static bool LineCountCheck(string message) {
             int maxLinesLimit = AppSettingsUtil.AppSettingsInt("maxLinesLimit", false, 15);
             if (message.Split('\n').Length >= maxLinesLimit) {
                 return false;
