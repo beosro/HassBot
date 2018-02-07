@@ -2,9 +2,9 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+*.config
 /TestClient/bin
 /TestClient/obj
-*.config
 /HassBotUtils/bin
 /HassBotUtils/obj
 /HassBotSvc/bin
@@ -15,7 +15,6 @@
 /HassBotDTOs/obj
 /HassBotData/bin
 /HassBotData/obj
-/HassBotData/Properties
 /packages
 /Output
 .vs
