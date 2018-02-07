@@ -60,8 +60,7 @@ For the automatic code verification to work, the code must use `~share` format. 
 
 ```
 ```yaml
-code here
-```
+code here```
 ```
 
 ### Lookup / Deepsearch in the sitemap document
