@@ -51,12 +51,15 @@ namespace HassBotLib {
             sb.Append("\\`\\`\\`\n");
 
             // mention users if any
-            await base.MentionUsers();
+            string mentionedUsers = string.Empty;
+            foreach (var user in Context.Message.MentionedUsers) {
+                mentionedUsers += $"{user.Mention} ";
+            }
 
             var embed = new EmbedBuilder();
             embed.WithTitle(":information_source:");
             embed.WithColor(Color.DarkRed);
-            embed.AddInlineField("Format Code:", sb.ToString());
+            embed.AddInlineField("Format Code:", mentionedUsers + sb.ToString());
             await ReplyAsync("", false, embed);
         }
     }

@@ -25,8 +25,8 @@ namespace HassBotLib {
             }
         }
 
-        private static readonly string WELCOME_MESSAGE =
-            "Welcome, {0}! Please make sure you thoroughly read <#331130181102206976> before posting. Thank you!";
+        //private static readonly string WELCOME_MESSAGE =
+        //    "Welcome, {0}! Please make sure you thoroughly read <#331130181102206976> before posting. Thank you!";
 
         private static readonly string FUNFACT_URL = 
             "http://api.icndb.com/jokes/random?firstName={0}&lastName=&limitTo=[nerdy]";
@@ -47,19 +47,19 @@ namespace HassBotLib {
             var dmChannel = await user.GetOrCreateDMChannelAsync();
             await dmChannel.SendMessageAsync(sb.ToString());
 
-            // publicly welcome the new user to the channel
-            string funFact = GetRandomFunFact(user.Mention);
-            if ( funFact == string.Empty)
-                await channel.SendMessageAsync(string.Format(WELCOME_MESSAGE, user.Mention));
-            else {
-                funFact = WebUtility.HtmlDecode(funFact);
-                StringBuilder msgWithFunFact = new StringBuilder();
-                msgWithFunFact.Append(string.Format(WELCOME_MESSAGE, user.Mention));
-                msgWithFunFact.Append($"\nFun Fact about {user.Mention}: ");
-                msgWithFunFact.Append(funFact);
-                msgWithFunFact.Append("\n");
-                await channel.SendMessageAsync(msgWithFunFact.ToString());
-            }
+            //// publicly welcome the new user to the channel
+            //string funFact = GetRandomFunFact(user.Mention);
+            //if ( funFact == string.Empty)
+            //    await channel.SendMessageAsync(string.Format(WELCOME_MESSAGE, user.Mention));
+            //else {
+            //    funFact = WebUtility.HtmlDecode(funFact);
+            //    StringBuilder msgWithFunFact = new StringBuilder();
+            //    msgWithFunFact.Append(string.Format(WELCOME_MESSAGE, user.Mention));
+            //    msgWithFunFact.Append($"\nFun Fact about {user.Mention}: ");
+            //    msgWithFunFact.Append(funFact);
+            //    msgWithFunFact.Append("\n");
+            //    await channel.SendMessageAsync(msgWithFunFact.ToString());
+            //}
         }
 
         private static void GetWelcomeMessage(StringBuilder sb, SocketGuildUser user) {

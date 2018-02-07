@@ -62,8 +62,12 @@ namespace HassBotLib {
             embed.AddInlineField("New users", NewUser.NewUsers.ToString());
             embed.AddInlineField("Total Messages", HASSBot.MessagesProcessed.ToString());
 
-            // mention users if any
-            await base.MentionUsers();
+            // mentioned users
+            string mentionedUsers = string.Empty;
+            foreach (var user in Context.Message.MentionedUsers) {
+                mentionedUsers += $"{user.Mention} ";
+            }
+            embed.AddInlineField("FYI", mentionedUsers);
 
             await ReplyAsync(string.Empty, false, embed);
         }

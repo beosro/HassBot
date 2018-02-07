@@ -47,13 +47,16 @@ namespace HassBotLib {
             sb.Append("For sharing code, please use https://www.hastebin.com\n");
             sb.Append("If it is less than 10 lines of code, **make sure** it is formatted using below format:\n\\`\\`\\`yaml\ncode\n\\`\\`\\`\n");
 
-            // mention users if any
-            await base.MentionUsers();
+            // mentioned users
+            string mentionedUsers = string.Empty;
+            foreach (var user in Context.Message.MentionedUsers) {
+                mentionedUsers += $"{user.Mention} ";
+            }
 
             var embed = new EmbedBuilder();
             embed.WithTitle("Welcome! :pray: ");
             embed.WithColor(Color.DarkRed);
-            embed.AddInlineField("Welcome:", sb.ToString());
+            embed.AddInlineField("Welcome:", mentionedUsers + sb.ToString());
             await ReplyAsync("", false, embed);
         }
     }

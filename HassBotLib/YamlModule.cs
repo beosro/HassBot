@@ -14,7 +14,10 @@ namespace HassBotLib {
     public class YamlModule : BaseModule {
 
         private static readonly string ERROR_USAGE =
-        "That's not how it works. Try the following:\n~yaml? \\`\\`\\`yaml\ncode\n\\`\\`\\`";
+            "That's not how it works. Try the following:\n~yaml? \\`\\`\\`yaml\ncode\n\\`\\`\\`";
+
+        private static readonly string YAML_START = @"```yaml";
+        private static readonly string YAML_END = @"```";
 
         private static int _counter = 0;
         public static int Counter {
@@ -52,22 +55,34 @@ namespace HassBotLib {
         private async Task YamlCommand(string cmd) {
             Counter++;
 
-            string errorMessage = string.Empty;
-            bool result = ValidateYaml.Validate(cmd, out errorMessage);
+            int start = cmd.IndexOf(YAML_START);
+            int end = cmd.IndexOf(YAML_END, start + 3);
 
-            // mention users if any
-            await base.MentionUsers();
+            if (start == -1 || end == -1 || end == start)
+                return;
+
+            string errMsg = string.Empty;
+            string substring = cmd.Substring(start, (end - start));
+
+            string errorMessage = string.Empty;
+            bool result = ValidateYaml.Validate(substring, out errorMessage);
+
+            // mentioned users
+            string mentionedUsers = string.Empty;
+            foreach (var user in Context.Message.MentionedUsers) {
+                mentionedUsers += $"{user.Mention} ";
+            }
 
             var embed = new EmbedBuilder();
             if (result == true) {
                 embed.WithTitle(":thumbsup:");
                 embed.WithColor(Helper.GetRandomColor());
-                embed.AddField("yaml?", "@HassBot says... Perfectly valid YAML!");
+                embed.AddField("yaml?", mentionedUsers + "Now, That's the perfectly valid YAML I'm talking about!");
             }
             else {
                 embed.WithTitle(":thumbsdown:");
                 embed.WithColor(Color.DarkRed);
-                embed.AddField("yaml?", string.Format("@HassBot says... Invalid Yaml!", errorMessage));
+                embed.AddField("yaml?", mentionedUsers + string.Format("Oops... Invalid YAML! Please check the code again!", mentionedUsers + errorMessage));
             }
             await ReplyAsync("", false, embed);
         }

@@ -177,14 +177,12 @@ namespace HassBotLib {
                 foreach (var user in message.MentionedUsers) {
                     mentionedUsers += $"{user.Mention} ";
                 }
-                if (mentionedUsers != string.Empty)
-                    await message.Channel.SendMessageAsync(mentionedUsers);
 
                 CommandDTO cmd = CommandManager.TheCommandManager.GetCommandByName(command);
                 if (cmd != null && cmd.CommandData != string.Empty) {
                     cmd.CommandCount += 1;
                     CommandManager.TheCommandManager.UpdateCommand(cmd);
-                    await message.Channel.SendMessageAsync(cmd.CommandData);
+                    await message.Channel.SendMessageAsync(mentionedUsers + cmd.CommandData);
                 }
                 else {
 
@@ -194,7 +192,7 @@ namespace HassBotLib {
                     // command not found, look it up and see if there are any results.
                     string lookupResult = Sitemap.Lookup(command);
                     if (string.Empty != lookupResult) {
-                        await message.Channel.SendMessageAsync(lookupResult);
+                        await message.Channel.SendMessageAsync(mentionedUsers + lookupResult);
                     }
                     else {
                         var poopEmoji = new Emoji("🙈");

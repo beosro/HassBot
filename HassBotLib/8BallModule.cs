@@ -64,20 +64,24 @@ namespace HassBotLib {
 
             // additional logic, so that the 8Ball prediction doesn't repeat
             while (true) {
-                Context.Channel.EnterTypingState();
                 int r = rnd.Next(predictions.Count());
                 prediction = predictions[r];
                 if (previousPrediction != prediction)
                     break;
-                Context.Channel.EnterTypingState();
             }
 
             // mention users if any
-            await base.MentionUsers();
+            string mentionedUsers = string.Empty;
+            foreach (var user in Context.Message.MentionedUsers) {
+                mentionedUsers += $"{user.Mention} ";
+            }
 
             // update previous prediction
             previousPrediction = prediction;
-            embed.AddField("8Ball Prediction:", prediction);
+            if ( string.Empty == mentionedUsers)
+                embed.AddField("8Ball Prediction:", prediction);
+            else
+                embed.AddField("8Ball Prediction:", mentionedUsers + prediction);
             await ReplyAsync(string.Empty, false, embed);
         }
     }

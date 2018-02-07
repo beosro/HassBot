@@ -74,6 +74,12 @@ namespace HassBotLib {
             string result = sb.ToString();
             result = result.Trim();
 
+            // mention users if any
+            string mentionedUsers = string.Empty;
+            foreach (var user in Context.Message.MentionedUsers) {
+                mentionedUsers += $"{user.Mention} ";
+            }
+
             var embed = new EmbedBuilder();
             if (result == string.Empty) {
                 embed.WithTitle(string.Format("Searched for '{0}': ", input));
@@ -82,10 +88,7 @@ namespace HassBotLib {
             }
             else {
                 embed.WithColor(Helper.GetRandomColor());
-                embed.AddInlineField("Here is what I found: :smile:", sb.ToString());
-
-                // mention users if any
-                await base.MentionUsers();
+                embed.AddInlineField("Here is what I found: :smile:", mentionedUsers + sb.ToString());
             }
             await ReplyAsync("", false, embed);
         }

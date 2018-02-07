@@ -62,10 +62,13 @@ namespace HassBotLib {
             sb.Append("`~yaml?      - Validates the given YAML code. Usage: ~yaml <yaml code> <@optional user1> <@optional user2>...etc`\n");
             sb.Append("`~welcome    - Shows welcome information Useful & point ` <#331130181102206976> ` to newcomers. Usage: ~welcome <@optional user1> <@optional user2>...etc`\n");
 
-            // user mentions if any
-            await base.MentionUsers();
+            // mention users if any
+            string mentionedUsers = string.Empty;
+            foreach (var user in Context.Message.MentionedUsers) {
+                mentionedUsers += $"{user.Mention} ";
+            }
 
-            await ReplyAsync(sb.ToString());
+            await ReplyAsync(mentionedUsers + sb.ToString());
         }
     }
 }
