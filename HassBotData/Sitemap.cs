@@ -8,6 +8,7 @@ using System;
 using System.Configuration;
 using System.Xml;
 using HassBotUtils;
+using System.Text;
 
 namespace HassBotData {
 
@@ -45,6 +46,25 @@ namespace HassBotData {
             get {
                 return doc;
             }
+        }
+
+        public static string Lookup (string input) {
+            ArgumentValidation.CheckForEmptyString("Missing lookup 'search' string.", "input");
+            XmlDocument doc = Sitemap.SiteMapXmlDocument;
+
+            StringBuilder sb = new StringBuilder();
+            string fomatted_input = "/" + input + "/";
+            foreach (XmlNode item in doc.DocumentElement.ChildNodes) {
+                if (item.InnerText.Contains(fomatted_input)) {
+                    if (item.FirstChild.InnerText.EndsWith(fomatted_input)) {
+                        sb.Append("<" + item.FirstChild.InnerText + ">");
+                        sb.Append("\n");
+                    }
+                }
+            }
+            string result = sb.ToString();
+            result = result.Trim();
+            return result;
         }
     }
 }
