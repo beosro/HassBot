@@ -59,10 +59,9 @@ People who come to the Home Assistant Discord channel tend to post their configu
 For the automatic code verification to work, the code must use `~share` format. The share format is:
 
 ```
-
-``````yaml
-yaml code
-``````
+```yaml
+code here
+```
 ```
 
 ### Lookup / Deepsearch in the sitemap document
