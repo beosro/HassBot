@@ -18,10 +18,7 @@ namespace HassBotDTOs {
 
     public class CommandDTOComparer : IEqualityComparer<CommandDTO> {
         public bool Equals(CommandDTO x, CommandDTO y) {
-            if (x.CommandName == y.CommandName)
-                return true;
-            else
-                return false;
+            return (x.CommandName == y.CommandName) ? true : false;
         }
 
         public int GetHashCode(CommandDTO obj) {
