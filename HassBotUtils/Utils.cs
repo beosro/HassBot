@@ -21,8 +21,30 @@ namespace HassBotUtils
                     log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static bool LineCountCheck(string message) {
+            if (string.Empty == message)
+                return true;
+
             int maxLinesLimit = AppSettingsUtil.AppSettingsInt("maxLinesLimit", false, 15);
-            if (message.Split('\n').Length >= maxLinesLimit) {
+            bool yamlHeader = false;
+            string YAML_START = @"```yaml";
+            string YAML_START_1 = @"```";
+            string YAML_END = @"```";
+
+            int start = message.IndexOf(YAML_START);
+            if ( -1 == start)
+                start = message.IndexOf(YAML_START_1);
+
+            int end = message.IndexOf(YAML_END, start + 3);
+
+            if (start == -1 || end == -1 || end == start)
+                yamlHeader = false;
+            else
+                yamlHeader = true;
+
+            if (yamlHeader)
+                maxLinesLimit = maxLinesLimit +2;
+
+            if (message.Split('\n').Length > maxLinesLimit) {
                 return false;
             }
             return true;
