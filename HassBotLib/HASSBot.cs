@@ -152,8 +152,8 @@ namespace HassBotLib {
             int pos = 0;
 
             if (!(message.HasCharPrefix(PREFIX_1, ref pos) ||
-                message.HasCharPrefix(PREFIX_2, ref pos) ||
-                message.HasMentionPrefix(_client.CurrentUser, ref pos)))
+                  message.HasCharPrefix(PREFIX_2, ref pos) ||
+                  message.HasMentionPrefix(_client.CurrentUser, ref pos)))
                 return;
 
             MessagesProcessed++;
@@ -169,7 +169,6 @@ namespace HassBotLib {
                 logger.Error(result.ErrorReason);
             }
             else {
-                // Check the custom commands section before returning
                 string key = message.Content.Substring(1);
                 string command = key.Split(' ')[0];
 

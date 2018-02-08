@@ -11,6 +11,9 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using HassBotUtils;
+using Discord.WebSocket;
+
 namespace HassBotLib {
     public class Helper {
 
@@ -64,5 +67,38 @@ namespace HassBotLib {
 
             return Task.FromResult(0);
         }
+
+        public static bool MessageContainsPrefix(string message, char prefix,  ref int pos) {
+            int index = message.IndexOf(prefix);
+            if (index == -1)
+                return false;
+
+            pos = index;
+            return true;
+        }
+
+        public static bool MessageContainsMention(string message, SocketSelfUser user, ref int pos) {
+            if (message.Length <= 3 || message[0] != '<' || message[1] != '@')
+                return false;
+
+            int endPos = message.IndexOf('>');
+            if (endPos == -1)
+                return false;
+
+            if (message.Length < endPos + 2 || message[endPos + 1] != ' ')
+                return false; //Must end in "> "
+
+            ulong userId;
+            if (!MentionUtils.TryParseUser(message.Substring(0, endPos + 1), out userId))
+                return false;
+
+            if (userId == user.Id) {
+                pos = endPos + 2;
+                return true;
+            }
+
+            return false;
+        }
+        
     }
 }
