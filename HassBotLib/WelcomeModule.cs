@@ -48,11 +48,7 @@ namespace HassBotLib {
             sb.Append("If it is less than 10 lines of code, **make sure** it is formatted using below format:\n\\`\\`\\`yaml\ncode\n\\`\\`\\`\n");
 
             // mentioned users
-            string mentionedUsers = string.Empty;
-            foreach (var user in Context.Message.MentionedUsers) {
-                mentionedUsers += $"{user.Mention} ";
-            }
-
+            string mentionedUsers = base.MentionUsers();
             var embed = new EmbedBuilder();
             embed.WithTitle("Welcome! :pray: ");
             embed.WithColor(Color.DarkRed);

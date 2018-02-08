@@ -51,10 +51,7 @@ namespace HassBotLib {
             sb.Append("\\`\\`\\`\n");
 
             // mention users if any
-            string mentionedUsers = string.Empty;
-            foreach (var user in Context.Message.MentionedUsers) {
-                mentionedUsers += $"{user.Mention} ";
-            }
+            string mentionedUsers = base.MentionUsers();
 
             var embed = new EmbedBuilder();
             embed.WithTitle(":information_source:");

@@ -62,11 +62,7 @@ namespace HassBotLib {
             embed.AddField("GitHub", "You can find the source code here https://github.com/skalavala/HassBot");
 
             // mention users if any
-            string mentionedUsers = string.Empty;
-            foreach (var user in Context.Message.MentionedUsers) {
-                mentionedUsers += $"{user.Mention} ";
-            }
-
+            string mentionedUsers = base.MentionUsers();
             if (string.Empty != mentionedUsers)
                 embed.AddInlineField("FYI", mentionedUsers);            
 

@@ -68,11 +68,7 @@ namespace HassBotLib {
             bool result = ValidateYaml.Validate(substring, out errorMessage);
 
             // mentioned users
-            string mentionedUsers = string.Empty;
-            foreach (var user in Context.Message.MentionedUsers) {
-                mentionedUsers += $"{user.Mention} ";
-            }
-
+            string mentionedUsers = base.MentionUsers();
             var embed = new EmbedBuilder();
             if (result == true) {
                 embed.WithTitle(":thumbsup:");

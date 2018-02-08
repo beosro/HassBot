@@ -43,11 +43,7 @@ namespace HassBotLib {
             string s = "Please use https://www.hastebin.com to share code.";
 
             // mentioned users
-            string mentionedUsers = string.Empty;
-            foreach (var user in Context.Message.MentionedUsers) {
-                mentionedUsers += $"{user.Mention} ";
-            }
-
+            string mentionedUsers = base.MentionUsers();
             var embed = new EmbedBuilder();
             embed.WithTitle(":point_down: ");
             embed.WithColor(Color.DarkRed);

@@ -42,8 +42,6 @@ namespace HassBotLib {
         private async Task StatsCommand() {
             Counter++;
 
-            await Helper.PersistCounters();
-
             var embed = new EmbedBuilder();
             embed.WithTitle("Stats of the @HassBot:");
             embed.WithColor(Helper.GetRandomColor());
@@ -63,11 +61,9 @@ namespace HassBotLib {
             embed.AddInlineField("Total Messages", HASSBot.MessagesProcessed.ToString());
 
             // mentioned users
-            string mentionedUsers = string.Empty;
-            foreach (var user in Context.Message.MentionedUsers) {
-                mentionedUsers += $"{user.Mention} ";
-            }
-            embed.AddInlineField("FYI", mentionedUsers);
+            string mentionedUsers = base.MentionUsers();
+            if ( string.Empty != mentionedUsers)
+                embed.AddInlineField("FYI", mentionedUsers);
 
             await ReplyAsync(string.Empty, false, embed);
         }

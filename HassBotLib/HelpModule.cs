@@ -63,11 +63,7 @@ namespace HassBotLib {
             sb.Append("`~welcome    - Shows welcome information Useful & point ` <#331130181102206976> ` to newcomers. Usage: ~welcome <@optional user1> <@optional user2>...etc`\n");
 
             // mention users if any
-            string mentionedUsers = string.Empty;
-            foreach (var user in Context.Message.MentionedUsers) {
-                mentionedUsers += $"{user.Mention} ";
-            }
-
+            string mentionedUsers = base.MentionUsers();
             await ReplyAsync(mentionedUsers + sb.ToString());
         }
     }

@@ -21,3 +21,9 @@ push.cmd
 /Output
 .vs
 secret.txt
+!HassBotData/packages.config
+!HassBotDTOs/packages.config
+!HassBotLib/packages.config
+!HassBotSvc/packages.config
+!HassBotUtils/packages.config
+!TestClient/packages.config
