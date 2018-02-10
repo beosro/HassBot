@@ -148,6 +148,22 @@ namespace HassBotLib {
                 await context.Message.AddReactionAsync(poopEmoji);
             }
 
+            // Change Nick Name 💎
+            // Get the Home Assistant Server Guild
+            // ulong serverGuild = (ulong) AppSettingsUtil.AppSettingsLong("serverGuild", true, 330944238910963714);
+            // var guild = _client.GetGuild(serverGuild);
+            // if (null != guild) {
+            //    var user = guild.GetUser(context.User.Id);
+            //    if (user.Nickname.Contains("🔹")) {
+            //        await user.ModifyAsync(
+            //            x => { 
+            //              string newNick = user.Nickname.Replace("🔹", string.Empty);
+            //              x.Nickname = newNick; 
+            //          }
+            //        );
+            //    }
+            //}
+
             // Create a number to track where the prefix ends and the command begins
             int pos = 0;
 
@@ -192,10 +208,6 @@ namespace HassBotLib {
                     string lookupResult = Sitemap.Lookup(command);
                     if (string.Empty != lookupResult) {
                         await message.Channel.SendMessageAsync(mentionedUsers + lookupResult);
-                    }
-                    else {
-                        var poopEmoji = new Emoji("🙈");
-                        await context.Message.AddReactionAsync(poopEmoji);
                     }
                 }
             }

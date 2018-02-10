@@ -4,6 +4,7 @@
 //  FILE            : BaseModule.cs
 //  DESCRIPTION     : A base class for all Module Components
 ///////////////////////////////////////////////////////////////////////////////
+using Discord;
 using Discord.Commands;
 using System.Threading.Tasks;
 

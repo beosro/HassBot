@@ -2,7 +2,7 @@
 //  AUTHOR          : Suresh Kalavala
 //  DATE            : 02/02/2018
 //  FILE            : Ping.cs
-//  DESCRIPTION     : A class that implements ~ping command
+//  DESCRIPTION     : A class that implements ping/pong commands
 ///////////////////////////////////////////////////////////////////////////////
 using Discord;
 using Discord.Commands;
@@ -28,14 +28,25 @@ namespace HassBotLib {
             return _counter;
         }
 
-        [Command("ping")]
+        [Command("ping"), Alias("pong")]
         public async Task PingAsync() {
             Counter++;
+
+            string response = string.Empty;
+            string request = Context.Message.Content.ToLower();
+            request = request.Replace("~", string.Empty).Replace(".", string.Empty);
+
+            if (Context.Message.Content.ToLower() == "ping")
+                response = "PONG!";
+            else if (Context.Message.Content.ToLower() == "pong")
+                response = "PING!!!";
+            if (string.Empty == response)
+                return;
 
             var embed = new EmbedBuilder();
             embed.WithTitle(":ping_pong:");
             embed.WithColor(Color.DarkRed);
-            embed.AddField("ping?", "PONG!!!");
+            embed.AddField(request + "?", response);
             await ReplyAsync("", false, embed);
         }
     }
