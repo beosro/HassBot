@@ -36,9 +36,9 @@ namespace HassBotLib {
             string request = Context.Message.Content.ToLower();
             request = request.Replace("~", string.Empty).Replace(".", string.Empty);
 
-            if (Context.Message.Content.ToLower() == "ping")
+            if (request == "ping")
                 response = "PONG!";
-            else if (Context.Message.Content.ToLower() == "pong")
+            else if (request == "pong")
                 response = "PING!!!";
             if (string.Empty == response)
                 return;

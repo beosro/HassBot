@@ -57,6 +57,7 @@ namespace HassBotLib {
             sb.Append("`~lookup     - Provides links to the documentation from sitemap. Usage: ~lookup <search> <@optional user1> <@optional user2>...etc`\n");
             sb.Append("`~ping       - Reply with pong. Use this to check if the bot is alive or not. Usage: ~ping`\n");
             sb.Append("`~share      - Shows how to share code that is more than 10 -15 lines. Usage: ~share <@optional user1> <@optional user2>...etc`\n");
+            sb.Append("`~lmgtfy     - Googles content for you. Usage: ~lmgtfy <@optional user1> <@optional user2> <search String>`\n");
             sb.Append("`~stats      - Shows some pretty interesting stats about the HassBot. Usage: ~stats`\n");
             sb.Append("`~update     - Refreshes and updates the lookup/sitemap data. Usage: ~update`\n");
             sb.Append("`~yaml?      - Validates the given YAML code. Usage: ~yaml <yaml code> <@optional user1> <@optional user2>...etc`\n");

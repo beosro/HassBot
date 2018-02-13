@@ -91,6 +91,7 @@
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -106,6 +107,7 @@
     <Compile Include="FormatModule.cs" />
     <Compile Include="HASSBot.cs" />
     <Compile Include="HelpModule.cs" />
+    <Compile Include="LMGTFY.cs" />
     <Compile Include="LookupModule.cs" />
     <Compile Include="NewUser.cs" />
     <Compile Include="PingModule.cs" />
