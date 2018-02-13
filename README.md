@@ -1,8 +1,8 @@
 # Home Assistant Discord Bot
 
 Currently the bot is running in two different channels 
-1. https://discord.gg/c5DvZ4e
-2. https://discord.gg/ggU7UBz
+1. https://discord.gg/c5DvZ4e (English Home-Assistant Discord Channel)
+2. https://discord.gg/ggU7UBz (Swedish Smart Hoem Discord Channel)
 
 This is the HassBot (A Discord Bot) I wrote for Home Assistant's Discord Channel. The Bot basically has a bunch of commands - like help, about...etc. It also has custom commands, where the moderators can create commands on the fly and run them as needed. 
 
