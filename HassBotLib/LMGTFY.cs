@@ -1,20 +1,18 @@
-﻿using Discord;
+﻿///////////////////////////////////////////////////////////////////////////////
+//  AUTHOR          : Suresh Kalavala
+//  DATE            : 02/02/2018
+//  FILE            : HassBot.cs
+//  DESCRIPTION     : A class that implements ~lmgtfy command
+///////////////////////////////////////////////////////////////////////////////
+using Discord;
 using Discord.Commands;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using HassBotData;
-using HassBotDTOs;
-using System;
-using System.Net;
 using System.Web;
-using System.IO;
 
 namespace HassBotLib {
 
     public class LMGTFY : BaseModule {
+
         private static int _counter = 0;
         public static int Counter {
             get {
