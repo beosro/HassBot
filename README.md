@@ -1,5 +1,9 @@
 # Home Assistant Discord Bot
 
+Currently the bot is running in two different channels 
+1. https://discord.gg/c5DvZ4e
+2. https://discord.gg/ggU7UBz
+
 This is the HassBot (A Discord Bot) I wrote for Home Assistant's Discord Channel. The Bot basically has a bunch of commands - like help, about...etc. It also has custom commands, where the moderators can create commands on the fly and run them as needed. 
 
 The command prefixes are `~` and `.`. That means, the commands can be executed either by `~` or `.`. The following are the list of commands that it supports + custom/default command - which is anything!
@@ -15,6 +19,7 @@ The command prefixes are `~` and `.`. That means, the commands can be executed e
 ~lookup     - Provides links to the documentation from sitemap. Usage: ~lookup <search> <@optional user1> <@optional user2>...etc
 ~ping       - Reply with pong. Use this to check if the bot is alive or not. Usage: ~ping
 ~share      - Shows how to share code that is more than 10 -15 lines. Usage: ~share <@optional user1> <@optional user2>...etc
+~lmgtfy     - Googles content for you. Usage: ~lmgtfy <@optional user1> <@optional user2> <search String>
 ~stats      - Shows some pretty interesting stats about the HassBot. Usage: ~stats
 ~update     - Refreshes and updates the lookup/sitemap data. Usage: ~update
 ~yaml?      - Validates the given YAML code. Usage: ~yaml <yaml code> <@optional user1> <@optional user2>...etc
