@@ -45,5 +45,7 @@
     <add key="commandsFile" value="C:\HassBot\Output\commands.json" />
     <add key="sitemapUrl" value="https://home-assistant.io/sitemap.xml" />
     <add key="token" value="abcdefghijklmnopqrstuvwxyz1234567890abceefghij" />
+    <add key="deleteHoundBotMsgs" value="true" />
+    <add key="serverGuild" value="330944238910963714" />    
   </appSettings>
 </configuration>

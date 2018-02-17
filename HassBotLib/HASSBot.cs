@@ -132,14 +132,17 @@ namespace HassBotLib {
             if (message == null)
                 return;
 
+            // Create a Command Context.
+            var context = new SocketCommandContext(_client, message);
+            var channel = message.Channel as SocketGuildChannel;
+            await DeleteHoundCIMessages(message, context, channel);
+
             // We don't want the bot to respond to itself or other bots.
             // NOTE: Self-bots should invert this first check and remove the second
             // as they should ONLY be allowed to respond to messages from the same account.
             if (message.Author.Id == _client.CurrentUser.Id || message.Author.IsBot)
                 return;
-            
-            // Create a Command Context.
-            var context = new SocketCommandContext(_client, message);
+
             await ReactToYaml(message.Content, context);
 
             if (!Utils.LineCountCheck(message.Content)) {
@@ -209,6 +212,25 @@ namespace HassBotLib {
                     if (string.Empty != lookupResult) {
                         await message.Channel.SendMessageAsync(mentionedUsers + lookupResult);
                     }
+                }
+            }
+        }
+
+        private async Task DeleteHoundCIMessages(SocketUserMessage message, SocketCommandContext context, SocketGuildChannel channel) {
+            if (null == channel || channel.Name != "github" || message.Embeds.Count <= 0)
+                return;
+
+            bool purgeHoundBotMsgs = AppSettingsUtil.AppSettingsBool("deleteHoundBotMsgs", false, false);
+            if (!purgeHoundBotMsgs)
+                return;
+
+            ulong serverGuild = (ulong) AppSettingsUtil.AppSettingsLong("serverGuild", false, 330944238910963714);
+
+            foreach (Embed e in message.Embeds) {
+                EmbedAuthor author = (EmbedAuthor)e.Author;
+                if (author.ToString() == "houndci-bot") {
+                    logger.InfoFormat("Deleting the houndci-bot message: {0} => {1}: {2}", e.Url, e.Title, e.Description);
+                    await context.Message.DeleteAsync();
                 }
             }
         }
