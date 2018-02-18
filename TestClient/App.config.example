@@ -50,6 +50,6 @@
     <add key="discordServerName" value="Home Assistant" />
     <add key="botspamChannel" value="&lt;#331106174722113548&gt;"/>
     <add key="welcomerulesChannel" value="&lt;#331130181102206976&gt;"/>
-    <add key="maxLineLimitMessage" value="Attention!: Please use https://www.hastebin.com to share code that is more than 10-15 lines. You have been warned, {0}!\nPlease read rule #6 here &lt;#331130181102206976&gt;"/>
+    <add key="maxLineLimitMessage" value="Attention!: Please use https://www.hastebin.com to share code that is more than 10-15 lines. You have been warned, {0}!&#13;&#10;Please read rule #6 here &lt;#331130181102206976&gt;"/>
   </appSettings>
 </configuration>
