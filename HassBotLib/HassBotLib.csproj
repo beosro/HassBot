@@ -102,6 +102,7 @@
   <ItemGroup>
     <Compile Include="8BallModule.cs" />
     <Compile Include="AboutModule.cs" />
+    <Compile Include="AFK.cs" />
     <Compile Include="BaseModule.cs" />
     <Compile Include="CommandModule.cs" />
     <Compile Include="FormatModule.cs" />

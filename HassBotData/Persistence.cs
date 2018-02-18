@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using HassBotDTOs;
+using System;
 
 namespace HassBotData {
     public class Persistence {
@@ -23,14 +24,14 @@ namespace HassBotData {
             File.WriteAllText(filePath, json);
         }
 
-        public static Dictionary<string, int> LoadStats(string filePath) {
+        public static List<AFKDTO> LoadAFKUsers(string filePath) {
             if (!File.Exists(filePath)) return null;
             string json = File.ReadAllText(filePath);
-            return JsonConvert.DeserializeObject<Dictionary<string, int>>(json);
+            return JsonConvert.DeserializeObject<List<AFKDTO>>(json);
         }
 
-        public static void SaveStats(Dictionary<string, int> commands, string filePath) {
-            string json = JsonConvert.SerializeObject(commands, Formatting.Indented);
+        public static void SaveAFKUsers(List<AFKDTO> afkUsers, string filePath) {
+            string json = JsonConvert.SerializeObject(afkUsers, Formatting.Indented);
             File.WriteAllText(filePath, json);
         }
 

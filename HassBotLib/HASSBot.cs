@@ -24,7 +24,9 @@ namespace HassBotLib {
 
         private static readonly string TOKEN = "token";
         private static readonly string MAX_LINE_LIMIT =
-            "Attention!: Please use https://www.hastebin.com to share code that is more than 10-15 lines. You have been warned, {0}!\nPlease read rule #6 here <#331130181102206976>";
+            @"Attention!: Please use https://www.hastebin.com to share code that is more than 10-15 lines. You have been warned, {0}!\n
+              Please read rule #6 here <#331130181102206976>";
+
         private static readonly log4net.ILog logger =
              log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -76,30 +78,32 @@ namespace HassBotLib {
 
         private async Task HandleCommandAsync(SocketMessage arg) {
             var message = arg as SocketUserMessage;
-            if (message == null)
-                return;
 
             // Create a Command Context.
             var context = new SocketCommandContext(_client, message);
             var channel = message.Channel as SocketGuildChannel;
-            await Helper.DeleteHoundCIMessages(message, context, channel);
+
+            // remove houndci-bot messages from #github channel
+            await Helper.HandleHoundCIMessages(message, context, channel);
 
             // We don't want the bot to respond to itself or other bots.
             if (message.Author.Id == _client.CurrentUser.Id || message.Author.IsBot)
                 return;
 
+            // check if the user was in "away" mode. if it is, the user is no longer "away"
+            AFKManager.TheAFKManager.RemoveAFKUserById(context.User.Id);
+
+            // YAML verification
             await Helper.ReactToYaml(message.Content, context);
 
-            if (!Utils.LineCountCheck(message.Content)) {
-                var poopEmoji = new Emoji(POOP);
-                string msxLimitMsg = AppSettingsUtil.AppSettingsString("maxLineLimitMessage", false, MAX_LINE_LIMIT);
-                await message.Channel.SendMessageAsync(string.Format(msxLimitMsg, context.User.Mention));
-                await context.Message.AddReactionAsync(poopEmoji);
-            }
+            // Line limit check
+            await HandleLineCount(message, context);
+
+            // handle mentioned users
+            string mentionedUsers = await HandleMentionedUsers(message);
 
             // Create a number to track where the prefix ends and the command begins
             int pos = 0;
-
             if (!(message.HasCharPrefix(PREFIX_1, ref pos) ||
                   message.HasCharPrefix(PREFIX_2, ref pos) ||
                   message.HasMentionPrefix(_client.CurrentUser, ref pos)))
@@ -112,11 +116,25 @@ namespace HassBotLib {
                 return;
             }
 
+            // if you are here, it means there is no module that could handle the message/command
+            // lets check if we have anything in the custom commands collection
             string key = message.Content.Substring(1);
             string command = key.Split(' ')[0];
 
-            string mentionedUsers = PrepareMentionedUsers( message );
+            // handle custom command
+            await HandleCustomCommand(command, message, mentionedUsers, result);
+        }
 
+        private static async Task HandleLineCount(SocketUserMessage message, SocketCommandContext context) {
+            if (!Utils.LineCountCheck(message.Content)) {
+                var poopEmoji = new Emoji(POOP);
+                string msxLimitMsg = AppSettingsUtil.AppSettingsString("maxLineLimitMessage", false, MAX_LINE_LIMIT);
+                await message.Channel.SendMessageAsync(string.Format(msxLimitMsg, context.User.Mention));
+                await context.Message.AddReactionAsync(poopEmoji);
+            }
+        }
+
+        private static async Task HandleCustomCommand(string command, SocketUserMessage message, string mentionedUsers, IResult result) {
             CommandDTO cmd = CommandManager.TheCommandManager.GetCommandByName(command);
             if (cmd != null && cmd.CommandData != string.Empty) {
                 cmd.CommandCount += 1;
@@ -135,12 +153,19 @@ namespace HassBotLib {
             }
         }
 
-        private static string PrepareMentionedUsers(SocketUserMessage message) {
-            if ( null == message || message.MentionedUsers.Count == 0 )
-                return string.Empty;
-
+        private static async Task<string> HandleMentionedUsers(SocketUserMessage message) {
             string mentionedUsers = string.Empty;
             foreach (var user in message.MentionedUsers) {
+                AFKDTO afkDTO = AFKManager.TheAFKManager.GetAFKById(user.Id);
+                if (afkDTO != null) {
+                    await message.Channel.SendMessageAsync(string.Format("**{0} is away** for {1}d {2}h {3}m {4}s with a message => {5}",
+                                                            afkDTO.AwayUser,
+                                                            (DateTime.Now - afkDTO.AwayTime).Days,
+                                                            (DateTime.Now - afkDTO.AwayTime).Hours,
+                                                            (DateTime.Now - afkDTO.AwayTime).Minutes,
+                                                            (DateTime.Now - afkDTO.AwayTime).Seconds,
+                                                            afkDTO.AwayMessage));
+                }
                 mentionedUsers += $"{user.Mention} ";
             }
 

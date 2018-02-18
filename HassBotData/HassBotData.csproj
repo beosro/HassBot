@@ -52,10 +52,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AFKManager.cs" />
     <Compile Include="CommandManager.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="Persistence.cs" />
-    <Compile Include="PersistStats.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sitemap.cs" />
   </ItemGroup>

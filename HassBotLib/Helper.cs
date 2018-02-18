@@ -20,6 +20,8 @@ namespace HassBotLib {
 
         private static readonly string YAML_START = @"```yaml";
         private static readonly string YAML_END   = @"```";
+        private static readonly string GOOD_YAML  = "✅";
+        private static readonly string BAD_YAML   = "❌";
 
         private static readonly log4net.ILog logger =
                     log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -38,11 +40,6 @@ namespace HassBotLib {
             return colors[r];
         }
 
-        /// <summary>
-        /// Logs Messages using the default logger component (log4net)
-        /// </summary>
-        /// <param name="message">Message to log</param>
-        /// <returns></returns>
         public static Task LogMessage(LogMessage message) {
             switch (message.Severity) {
                 case LogSeverity.Critical:
@@ -65,14 +62,7 @@ namespace HassBotLib {
             return Task.FromResult(0);
         }
 
-        /// <summary>
-        /// Deletes HoundCI-Bot messages in the #GitHub Channel
-        /// </summary>
-        /// <param name="message">Message to check before deleting</param>
-        /// <param name="context">Context to delete message</param>
-        /// <param name="channel">Channel to verify</param>
-        /// <returns></returns>
-        public static async Task DeleteHoundCIMessages(SocketUserMessage message, 
+        public static async Task HandleHoundCIMessages(SocketUserMessage message, 
                                                        SocketCommandContext context, 
                                                        SocketGuildChannel channel) {
 
@@ -96,12 +86,6 @@ namespace HassBotLib {
             }
         }
 
-        /// <summary>
-        /// Reacts with an emoji for every message that contains YAML code
-        /// </summary>
-        /// <param name="content">Message Content to check for yaml</param>
-        /// <param name="context">Command Context to react</param>
-        /// <returns></returns>
         public static async Task ReactToYaml(string content, SocketCommandContext context) {
             if (!(content.Contains(YAML_START) || content.Contains(YAML_END)))
                 return;
@@ -116,11 +100,11 @@ namespace HassBotLib {
             string substring = content.Substring(start, (end - start));
             bool yamlCheck = ValidateYaml.Validate(substring, out errMsg);
             if (yamlCheck) {
-                var okEmoji = new Emoji("✅");
+                var okEmoji = new Emoji(GOOD_YAML);
                 await context.Message.AddReactionAsync(okEmoji);
             }
             else {
-                var errorEmoji = new Emoji("❌");
+                var errorEmoji = new Emoji(BAD_YAML);
                 await context.Message.AddReactionAsync(errorEmoji);
             }
         }
