@@ -13,9 +13,13 @@ using System.Threading.Tasks;
 
 using HassBotUtils;
 using Discord.WebSocket;
+using Discord.Commands;
 
 namespace HassBotLib {
     public class Helper {
+
+        private static readonly string YAML_START = @"```yaml";
+        private static readonly string YAML_END   = @"```";
 
         private static readonly log4net.ILog logger =
                     log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -24,8 +28,9 @@ namespace HassBotLib {
             Random rnd = new Random();
             Color[] colors = { Color.Blue, Color.DarkBlue, Color.DarkerGrey,
                                Color.DarkGreen, Color.DarkGrey, Color.DarkMagenta,
-                               Color.DarkOrange, Color.DarkPurple, Color.DarkRed, Color.DarkTeal,
-                               Color.Gold, Color.Green, Color.LighterGrey, Color.LightGrey,
+                               Color.DarkOrange, Color.DarkPurple, Color.DarkRed,
+                               Color.DarkTeal, Color.Gold, Color.Green,
+                               Color.LighterGrey, Color.LightGrey,
                                Color.LightOrange, Color.Magenta, Color.Orange,
                                Color.Purple, Color.Red, Color.Teal };
 
@@ -33,6 +38,11 @@ namespace HassBotLib {
             return colors[r];
         }
 
+        /// <summary>
+        /// Logs Messages using the default logger component (log4net)
+        /// </summary>
+        /// <param name="message">Message to log</param>
+        /// <returns></returns>
         public static Task LogMessage(LogMessage message) {
             switch (message.Severity) {
                 case LogSeverity.Critical:
@@ -55,50 +65,84 @@ namespace HassBotLib {
             return Task.FromResult(0);
         }
 
-        public static Task PersistCounters() {
-            Assembly thisAssembly = typeof(BaseModule).Assembly;
-            foreach (var t in thisAssembly.GetTypes()) {
-                if (t.IsAbstract || t != typeof (BaseModule))
-                    continue;
-                var instance = Activator.CreateInstance(t);
-                BaseModule x = (BaseModule)instance;
-                logger.Debug(string.Format("{0} is of count: '{1}'", t.AssemblyQualifiedName, ((BaseModule)instance).GetCount()));
+        /// <summary>
+        /// Deletes HoundCI-Bot messages in the #GitHub Channel
+        /// </summary>
+        /// <param name="message">Message to check before deleting</param>
+        /// <param name="context">Context to delete message</param>
+        /// <param name="channel">Channel to verify</param>
+        /// <returns></returns>
+        public static async Task DeleteHoundCIMessages(SocketUserMessage message, 
+                                                       SocketCommandContext context, 
+                                                       SocketGuildChannel channel) {
+
+            if (null == channel || channel.Name != "github" || message.Embeds.Count <= 0)
+                return;
+
+            bool purgeHoundBotMsgs = AppSettingsUtil.AppSettingsBool("deleteHoundBotMsgs", 
+                                                                     false, false);
+            if (!purgeHoundBotMsgs)
+                return;
+
+            // #github channel contains messages from many different sources. 
+            // check if the sender is 'houndci-bot' before deleting.
+            foreach (Embed e in message.Embeds) {
+                EmbedAuthor author = (EmbedAuthor)e.Author;
+                if (author.ToString() == "houndci-bot") {
+                    logger.InfoFormat("Deleting the houndci-bot message: {0} => {1}: {2}",
+                                       e.Url, e.Title, e.Description);
+                    await context.Message.DeleteAsync();
+                }
             }
-
-            return Task.FromResult(0);
         }
 
-        public static bool MessageContainsPrefix(string message, char prefix,  ref int pos) {
-            int index = message.IndexOf(prefix);
-            if (index == -1)
-                return false;
+        /// <summary>
+        /// Reacts with an emoji for every message that contains YAML code
+        /// </summary>
+        /// <param name="content">Message Content to check for yaml</param>
+        /// <param name="context">Command Context to react</param>
+        /// <returns></returns>
+        public static async Task ReactToYaml(string content, SocketCommandContext context) {
+            if (!(content.Contains(YAML_START) || content.Contains(YAML_END)))
+                return;
 
-            pos = index;
-            return true;
-        }
+            int start = content.IndexOf(YAML_START);
+            int end = content.IndexOf(YAML_END, start + 3);
 
-        public static bool MessageContainsMention(string message, SocketSelfUser user, ref int pos) {
-            if (message.Length <= 3 || message[0] != '<' || message[1] != '@')
-                return false;
+            if (start == -1 || end == -1 || end == start)
+                return;
 
-            int endPos = message.IndexOf('>');
-            if (endPos == -1)
-                return false;
-
-            if (message.Length < endPos + 2 || message[endPos + 1] != ' ')
-                return false; //Must end in "> "
-
-            ulong userId;
-            if (!MentionUtils.TryParseUser(message.Substring(0, endPos + 1), out userId))
-                return false;
-
-            if (userId == user.Id) {
-                pos = endPos + 2;
-                return true;
+            string errMsg = string.Empty;
+            string substring = content.Substring(start, (end - start));
+            bool yamlCheck = ValidateYaml.Validate(substring, out errMsg);
+            if (yamlCheck) {
+                var okEmoji = new Emoji("✅");
+                await context.Message.AddReactionAsync(okEmoji);
             }
-
-            return false;
+            else {
+                var errorEmoji = new Emoji("❌");
+                await context.Message.AddReactionAsync(errorEmoji);
+            }
         }
-        
+
+        public static async Task ChangeNickName(DiscordSocketClient client, 
+                                                SocketCommandContext context) {
+            // Change Nick Name 💎
+            // Get the Home Assistant Server Guild
+            ulong serverGuild = (ulong)AppSettingsUtil.AppSettingsLong("serverGuild", true, 330944238910963714);
+            var guild = client.GetGuild(serverGuild);
+            if (null == guild)
+                return;
+
+            var user = guild.GetUser(context.User.Id);
+            if (user.Nickname.Contains("🔹")) {
+                await user.ModifyAsync(
+                    x => {
+                        string newNick = user.Nickname.Replace("🔹", string.Empty);
+                        x.Nickname = newNick;
+                    }
+                );
+            }
+        }
     }
 }

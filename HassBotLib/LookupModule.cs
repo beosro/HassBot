@@ -14,34 +14,14 @@ using System.Xml;
 using HassBotData;
 namespace HassBotLib {
     public class LookupModule : BaseModule {
-        private static int _counter = 0;
-        public static int Counter {
-            get {
-                return _counter;
-            }
-            set {
-                _counter++;
-            }
-        }
-
         private static readonly string ERROR_USAGE =
             "Usage: ~lookup <keyword> <@ optional user>";
 
         private static readonly string DEEPSEARCH_USAGE =
             "Usage: ~deepsearch <keyword>";
 
-        public override string GetName() {
-            return "lookup";
-        }
-
-        public override int GetCount() {
-            return _counter;
-        }
-
         [Command("lookup")]
         public async Task LookupAsync() {
-            Counter++;
-
             var embed = new EmbedBuilder();
             embed.WithTitle("Oooops! :thinking:");
             embed.WithColor(Color.DarkRed);
@@ -55,8 +35,6 @@ namespace HassBotLib {
         }
 
         private async Task LookupCommand(string input) {
-            Counter++;
-
             XmlDocument doc = Sitemap.SiteMapXmlDocument;
 
             input = input.Split(' ')[0];
@@ -92,8 +70,6 @@ namespace HassBotLib {
 
         [Command("deepsearch")]
         public async Task DeepSearchAsync() {
-            Counter++;
-
             var embed = new EmbedBuilder();
             embed.WithTitle("Oooops! :thinking:");
             embed.WithColor(Color.DarkRed);
@@ -103,8 +79,6 @@ namespace HassBotLib {
 
         [Command("deepsearch")]
         public async Task DeepSearchAsync(string input) {
-            Counter++;
-
             XmlDocument doc = Sitemap.SiteMapXmlDocument;
 
             StringBuilder sb = new StringBuilder();

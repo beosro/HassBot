@@ -11,27 +11,9 @@ using System.Threading.Tasks;
 
 namespace HassBotLib {
     public class PingModule : BaseModule {
-        private static int _counter = 0;
-        public static int Counter {
-            get {
-                return _counter;
-            }
-            set {
-                _counter++;
-            }
-        }
-        public override string GetName() {
-            return "ping";
-        }
-
-        public override int GetCount() {
-            return _counter;
-        }
 
         [Command("ping"), Alias("pong")]
         public async Task PingAsync() {
-            Counter++;
-
             string response = string.Empty;
             string request = Context.Message.Content.ToLower();
             request = request.Replace("~", string.Empty).Replace(".", string.Empty);

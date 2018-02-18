@@ -13,24 +13,6 @@ namespace HassBotLib {
 
     public class LMGTFY : BaseModule {
 
-        private static int _counter = 0;
-        public static int Counter {
-            get {
-                return _counter;
-            }
-            set {
-                _counter++;
-            }
-        }
-
-        public override int GetCount() {
-            return Counter;
-        }
-
-        public override string GetName() {
-            return "lmgtfy";
-        }
-
         [Command("lmgtfy")]
         public async Task LetMeGoogleThatForYou([Remainder]string cmd) {
             var embed = new EmbedBuilder();

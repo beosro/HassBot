@@ -13,28 +13,10 @@ using Discord;
 
 namespace HassBotLib {
     public class AboutModule : BaseModule {
-
-        private static int _counter = 0;
-        public static int Counter {
-            get {
-                return _counter;
-            }
-            set {
-                _counter++;
-            }
-        }
-
         private Process _process;
 
         public AboutModule() {
             _process = Process.GetCurrentProcess();
-        }
-        public override string GetName() {
-            return "about";
-        }
-
-        public override int GetCount() {
-            return _counter;
         }
 
         [Command("about")]
@@ -48,8 +30,6 @@ namespace HassBotLib {
         }
 
         private async Task AboutCommand() {
-            Counter++;
-
             var embed = new EmbedBuilder();
             embed.WithTitle("Hello! This is @HassBot, written by @skalavala \n");
             embed.WithColor(Helper.GetRandomColor());

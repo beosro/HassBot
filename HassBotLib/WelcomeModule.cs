@@ -6,28 +6,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 using Discord;
 using Discord.Commands;
+using Discord.WebSocket;
+using HassBotUtils;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace HassBotLib {
     public class WelcomeModule : BaseModule {
-        private static int _counter = 0;
-        public static int Counter {
-            get {
-                return _counter;
-            }
-            set {
-                _counter++;
-            }
-        }
-
-        public override string GetName() {
-            return "welcome";
-        }
-
-        public override int GetCount() {
-            return _counter;
-        }
 
         [Command("welcome")]
         public async Task WelcomeAsync() {
@@ -40,11 +25,17 @@ namespace HassBotLib {
         }
 
         private async Task WelcomeCommand() {
-            Counter++;
-
             StringBuilder sb = new StringBuilder();
-            sb.Append("Welcome to Home Asssistant Discord Channel. Please read <#331130181102206976> \n");
-            sb.Append("For sharing code, please use https://www.hastebin.com\n");
+
+            string serverName = AppSettingsUtil.AppSettingsString("discordServerName", true, string.Empty); 
+            string welcomerulesChannel = AppSettingsUtil.AppSettingsString("welcomerulesChannel", false, string.Empty);
+
+            sb.Append(string.Format("Welcome to {0} Discord Channel! ", serverName));
+
+            if (string.Empty != welcomerulesChannel) {
+                sb.Append(string.Format("Please read {0} \n", welcomerulesChannel));
+            }
+            sb.Append("For sharing code, please use <https://www.hastebin.com>\n");
             sb.Append("If it is less than 10 lines of code, **make sure** it is formatted using below format:\n\\`\\`\\`yaml\ncode\n\\`\\`\\`\n");
 
             // mentioned users

@@ -17,16 +17,6 @@ using System;
 
 namespace HassBotLib {
     public class CommandModule : BaseModule {
-        private static int _counter = 0;
-        public static int Counter {
-            get {
-                return _counter;
-            }
-            set {
-                _counter++;
-            }
-        }
-
         private static readonly string USAGE_COMMAND =
             "Usage: ~command <command name> <command description>";
 
@@ -36,17 +26,8 @@ namespace HassBotLib {
         private static readonly log4net.ILog logger =
             log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public override string GetName() {
-            return "command";
-        }
-
-        public override int GetCount() {
-            return _counter;
-        }
-
         [Command("command")]
         public async Task CommandAsync() {
-            Counter++;
             var embed = new EmbedBuilder();
             embed.WithTitle("Oooops! :thinking:");
             embed.WithColor(Color.DarkRed);
@@ -65,7 +46,6 @@ namespace HassBotLib {
                 return;
             }
 
-            Counter++;
             string command = cmd;
             string value = string.Empty;
             if (cmd.Length > 0) {
@@ -124,7 +104,6 @@ namespace HassBotLib {
 
         [Command("list")]
         public async Task CommandListAsync() {
-            Counter++;
             StringBuilder sb = new StringBuilder(128);
 
             string commandTotal = string.Format(COMMAND_TOTAL,

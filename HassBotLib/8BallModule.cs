@@ -14,31 +14,11 @@ namespace HassBotLib {
     public class Magic8BallModule : BaseModule {
 
         private string previousPrediction = string.Empty;
-        private static int _counter = 0;
-        public static int Counter {
-            get {
-                return _counter;
-            }
-            set {
-                _counter++;
-            }
-        }
-
         private static readonly string ERROR_USAGE =
                 "That's not how it works. Try ~8ball <your question>";
 
-        public override string GetName() {
-            return "8ball";
-        }
-
-        public override int GetCount() {
-            return _counter;
-        }
-
         [Command("8ball")]
         public async Task Magic8BallAsync() {
-            Counter++;
-
             var embed = new EmbedBuilder();
             embed.WithTitle("Oooops! :8ball:");
             embed.WithColor(Color.DarkRed);
@@ -48,7 +28,6 @@ namespace HassBotLib {
 
         [Command("8ball")]
         public async Task Magic8BallAsync([Remainder]string cmd) {
-            Counter++;
             Random rnd = new Random();
             string[] predictions = {
                     "Yes!", "No!", "Maybe", "Ask again later!", "Likely", "No Way!", "Not now!", "Stars say No!",

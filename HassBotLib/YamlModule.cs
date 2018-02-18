@@ -19,27 +19,8 @@ namespace HassBotLib {
         private static readonly string YAML_START = @"```yaml";
         private static readonly string YAML_END = @"```";
 
-        private static int _counter = 0;
-        public static int Counter {
-            get {
-                return _counter;
-            }
-            set {
-                _counter++;
-            }
-        }
-        public override string GetName() {
-            return "yaml";
-        }
-
-        public override int GetCount() {
-            return _counter;
-        }
-
         [Command("yaml?")]
         public async Task YamlAsync() {
-            Counter++;
-
             var embed = new EmbedBuilder();
             embed.WithTitle("Oooops!");
             embed.WithColor(Color.DarkRed);
@@ -53,8 +34,6 @@ namespace HassBotLib {
         }
 
         private async Task YamlCommand(string cmd) {
-            Counter++;
-
             int start = cmd.IndexOf(YAML_START);
             int end = cmd.IndexOf(YAML_END, start + 3);
 
@@ -78,7 +57,7 @@ namespace HassBotLib {
             else {
                 embed.WithTitle(":thumbsdown:");
                 embed.WithColor(Color.DarkRed);
-                embed.AddField("yaml?", mentionedUsers + string.Format("Oops... Invalid YAML! Please check the code again!", mentionedUsers + errorMessage));
+                embed.AddField("yaml?", mentionedUsers + string.Format("Invalid YAML! Error: {1}", errorMessage));
             }
             await ReplyAsync("", false, embed);
         }

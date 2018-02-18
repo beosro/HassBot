@@ -11,9 +11,6 @@ using System.Threading.Tasks;
 namespace HassBotLib {
 
     public abstract class BaseModule : ModuleBase<SocketCommandContext> {
-        abstract public string GetName();
-        abstract public int GetCount();
-
         protected string MentionUsers() {
             string mentionedUsers = string.Empty;
             foreach (var user in Context.Message.MentionedUsers) {

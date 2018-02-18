@@ -113,7 +113,6 @@
     <Compile Include="PingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShareModule.cs" />
-    <Compile Include="StatsModule.cs" />
     <Compile Include="UpdateModule.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="YamlModule.cs" />

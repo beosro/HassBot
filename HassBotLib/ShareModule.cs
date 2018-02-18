@@ -10,23 +10,6 @@ using System.Threading.Tasks;
 
 namespace HassBotLib {
     public class ShareModule : BaseModule {
-        private static int _counter = 0;
-        public static int Counter {
-            get {
-                return _counter;
-            }
-            set {
-                _counter++;
-            }
-        }
-
-        public override string GetName() {
-            return "share";
-        }
-
-        public override int GetCount() {
-            return _counter;
-        }
 
         [Command("share")]
         public async Task ShareAsync() {
@@ -39,7 +22,6 @@ namespace HassBotLib {
         }
 
         private async Task ShareCommand() {
-            Counter++;
             string s = "Please use https://www.hastebin.com to share code.";
 
             // mentioned users

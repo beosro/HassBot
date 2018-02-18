@@ -12,34 +12,14 @@ using HassBotData;
 
 namespace HassBotLib {
     public class UpdateModule : BaseModule {
-        private static int _counter = 0;
-        public static int RefreshCounter {
-            get {
-                return _counter;
-            }
-            set {
-                _counter++;
-            }
-        }
-
         private static readonly string UPDATE_SUCCESSFUL = 
             "Refreshed lookup data successfully!";
 
         private static readonly string UPDATE_FAILED =
-            "Failed to refresh lookup data! contact @skalavala";
-
-        public override string GetName() {
-            return "update";
-        }
-
-        public override int GetCount() {
-            return _counter;
-        }
+            "Failed to refresh lookup data! contact @skalavala at https://www.github.com/skalavala";
 
         [Command("update")]
         public async Task UpdateAsync() {
-            RefreshCounter++;
-
             var embed = new EmbedBuilder();
             try {
                 embed.WithColor(Helper.GetRandomColor());
