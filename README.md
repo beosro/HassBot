@@ -77,7 +77,7 @@ A fun command that randomly gives predictions to the questions. The answers are 
 ### Ping - health check
 Used to check the pulse of the Bot. When the `~ping` command is issued, the bot responses `Pong!`.
 
-### Welcome Comand
+### Welcome Command
 When the command `~welcome` is issued, it reminds the user to follow welcome rules.
 
 ...more.
