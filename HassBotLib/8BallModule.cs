@@ -30,11 +30,18 @@ namespace HassBotLib {
         public async Task Magic8BallAsync([Remainder]string cmd) {
             Random rnd = new Random();
             string[] predictions = {
-                    "Yes!", "No!", "Maybe", "Ask again later!", "Likely", "No Way!", "Not now!", "Stars say No!",
-                    "Most likely", "Not likely", "Definitely", "Most Definitely", "Concentrate and ask again",
-                    "It is certain", "without a doubt!",  "As I see it, Yes!", "Are you crazy?",
-                    "Signs point to 'Yes'", "Better not tell you now", "That's a secret!", "Outlook not so good!",
-                    "Odds aren't good!", "Outlook is good!", "Don't count on it!"};
+                "As If","Ask Me If I Care","Dumb Question Ask Another","Forget About It","Get A Clue","In Your Dreams",
+                "Not A Chance","Obviously","Oh Please","Sure","That's Ridiculous!","Well Maybe","What Do You Think?",
+                "Whatever","Who Cares?","Yeah And I'm The Pope","Yeah Right","You Wish","You've Got To Be Kidding...",
+                "At Least I Love You","Nice Try!","Pure Genius!","That's O.K.","The Sky's The Limit","You're 100% Fun!",
+                "As I See It Yes","Ask Again Later","Better Not Tell You Now","Cannot Predict Now",
+                "Concentrate and Ask Again","Don't Count On It","It Is Certain","Most Likely","My Reply Is No",
+                "My Sources Say No","Outlook Good","Outlook Not So Good","Reply Hazy Try Again","Signs Point to Yes",
+                "Very Doubtful","Without A Doubt","Yes","Yes - Definitely","You May Rely On It","Absolutely",
+                "Answer Unclear Ask Later","Cannot Foretell Now","Can't Say Now","Chances Aren't Good",
+                "Consult Me Later","Don't Bet On It","Focus And Ask Again","Indications Say Yes","Looks Like Yes",
+                "No","No Doubt About It","Positively","Prospect Good","So It Shall Be","The Stars Say No",
+                "Unlikely","Very Likely","Yes","You Can Count On It" };
 
             var embed = new EmbedBuilder();
             embed.WithTitle(":8ball:");

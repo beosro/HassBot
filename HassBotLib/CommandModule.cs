@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using HassBotData;
 using HassBotDTOs;
 using System;
+using Discord.WebSocket;
 
 namespace HassBotLib {
     public class CommandModule : BaseModule {
