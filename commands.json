@@ -148,7 +148,7 @@
   },
   {
     "CommandName": "ccostan_repo",
-    "CommandData": "Be sure to ⭐ <https://github.com/CCOSTAN/Home-AssistantConfig#-home-assistant-config-by-ccostan>",
+    "CommandData": "Be sure to follow <https://github.com/CCOSTAN/Home-AssistantConfig#-home-assistant-config-by-ccostan>",
     "CommandAuthor": "<@!284395792800677889>",
     "CommandCreatedDate": "2018-03-16T16:48:34.1135971-04:00",
     "CommandCount": 1
@@ -358,7 +358,7 @@
   },
   {
     "CommandName": "git",
-    "CommandData": "Here are some useful commands to push your repo to GitHub once you have the `git` part all set up: <https://github.com/CCOSTAN/Home-AssistantConfig/blob/master/shell_scripts/gitupdate.sh> - Be sure to ⭐ the Repo!",
+    "CommandData": "Here are some useful commands to push your repo to GitHub once you have the `git` part all set up: <https://github.com/CCOSTAN/Home-AssistantConfig/blob/master/shell_scripts/gitupdate.sh>",
     "CommandAuthor": "<@!284395792800677889>",
     "CommandCreatedDate": "2018-03-16T16:54:00.4267409-04:00",
     "CommandCount": 1
@@ -540,7 +540,7 @@
   },
   {
     "CommandName": "arsaboo",
-    "CommandData": "For best of the best home automations, ⭐ and visit my repo at <https://github.com/arsaboo/homeassistant-config>",
+    "CommandData": "For best of the best home automations, visit my repo at <https://github.com/arsaboo/homeassistant-config>",
     "CommandAuthor": "<@!284395792800677889>",
     "CommandCreatedDate": "2018-03-16T16:59:47.0524113-04:00",
     "CommandCount": 2
@@ -589,7 +589,7 @@
   },
   {
     "CommandName": "rrubin0",
-    "CommandData": "rrubin0's Home Assistant Configs. Be sure to 🌟 : my repo, if you like anything here! <https://github.com/rrubin0/hassio-config>",
+    "CommandData": "rrubin0's Home Assistant Configs. Be sure to follow my repo, if you like anything here! <https://github.com/rrubin0/hassio-config>",
     "CommandAuthor": "<@!284395792800677889>",
     "CommandCreatedDate": "2018-03-16T17:01:27.4744835-04:00",
     "CommandCount": 1
