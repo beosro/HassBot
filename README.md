@@ -9,21 +9,24 @@ This is the HassBot (A Discord Bot) I wrote for Home Assistant's Discord Channel
 The command prefixes are `~` and `.`. That means, the commands can be executed either by `~` or `.`. The following are the list of commands that it supports + custom/default command - which is anything!
 
 ```
+~about      - Shows information about this bot.
 ~help       - Displays this message. Usage: ~help
 ~8ball      - Predicts an answer to a given question. Usage: ~8ball <question> <@optional user1> <@optional user2>...etc
-~about      - Shows information about this bot.
-~command    - Create custom commands. For ex: ~command <command name> <command description>
+~list       - Shows existing custom command list.
+~command    - Create custom commands using: ~command <command name> <command description>
 ~command    - Run Custom Command. Usage: ~skalavala <@optional user1> <@optional user2>...etc
+~lookup     - Provides links to the documentation from sitemap. Usage: ~lookup <search> <@optional user1> <@optional user2>...etc
 ~deepsearch - Searches hard, sends you a direct message. Use with caution!
 ~format     - Shows how to format code. Usage: ~format <@optional user1> <@optional user2>...etc
-~lookup     - Provides links to the documentation from sitemap. Usage: ~lookup <search> <@optional user1> <@optional user2>...etc
-~ping       - Reply with pong. Use this to check if the bot is alive or not. Usage: ~ping
 ~share      - Shows how to share code that is more than 10 -15 lines. Usage: ~share <@optional user1> <@optional user2>...etc
 ~lmgtfy     - Googles content for you. Usage: ~lmgtfy <@optional user1> <@optional user2> <search String>
-~stats      - Shows some pretty interesting stats about the HassBot. Usage: ~stats
+~ping       - Reply with pong. Use this to check if the bot is alive or not. Usage: ~ping
 ~update     - Refreshes and updates the lookup/sitemap data. Usage: ~update
 ~yaml?      - Validates the given YAML code. Usage: ~yaml <yaml code> <@optional user1> <@optional user2>...etc
-~welcome    - Shows welcome information Useful & point #welcome-rules to newcomers. Usage: ~welcome <@optional user1> <@optional user2>...etc
+~welcome    - Shows welcome information. Usage: ~welcome <@optional user1> <@optional user2>...etc
+~json2yaml  - Converts JSON code to YAML. Usage json2yaml <json code>``~yaml2json  - Converts YAML code to JSON. Usage: ~yaml2json <yaml code>
+
+Tip: If you put the yaml/json code in the correct format [```yaml <code> ```], or [```json <code> ```], Hassbot will automatically validate the code, and responds using emojis :thumbsup:
 ```
 
 ## Running the Bot as a Windows Service
