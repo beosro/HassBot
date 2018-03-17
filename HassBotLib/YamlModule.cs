@@ -44,7 +44,7 @@ namespace HassBotLib {
             string substring = cmd.Substring(start, (end - start));
 
             string errorMessage = string.Empty;
-            bool result = ValidateYaml.Validate(substring, out errorMessage);
+            bool result = ValidateHelper.ValidateYaml(substring, out errorMessage);
 
             // mentioned users
             string mentionedUsers = base.MentionUsers();

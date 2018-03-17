@@ -116,6 +116,7 @@
     <Compile Include="ShareModule.cs" />
     <Compile Include="UpdateModule.cs" />
     <Compile Include="Helper.cs" />
+    <Compile Include="Converter.cs" />
     <Compile Include="YamlModule.cs" />
     <Compile Include="WelcomeModule.cs" />
   </ItemGroup>

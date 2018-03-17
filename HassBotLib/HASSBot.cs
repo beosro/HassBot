@@ -96,6 +96,9 @@ namespace HassBotLib {
             // YAML verification
             await Helper.ReactToYaml(message.Content, context);
 
+            // JSON verification
+            await Helper.ReactToJson(message.Content, context);
+
             // Line limit check
             await HandleLineCount(message, context);
 

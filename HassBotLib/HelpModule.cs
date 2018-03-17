@@ -37,6 +37,10 @@ namespace HassBotLib {
             sb.Append("`~update     - Refreshes and updates the lookup/sitemap data. Usage: ~update`\n");
             sb.Append("`~yaml?      - Validates the given YAML code. Usage: ~yaml <yaml code> <@optional user1> <@optional user2>...etc`\n");
             sb.Append("`~welcome    - Shows welcome information. Usage: ~welcome <@optional user1> <@optional user2>...etc`\n");
+            sb.Append("`~json2yaml  - Converts JSON code to YAML. Usage json2yaml <json code>`");
+            sb.Append("`~yaml2json  - Converts YAML code to JSON. Usage: ~yaml2json <yaml code>`");
+            sb.Append("\n\n");
+            sb.Append("Tip: If you put the yaml/json code in the correct format [\\`\\`\\`yaml <code> \\`\\`\\`], or [\\`\\`\\`json <code> \\`\\`\\`], Hassbot will automatically validate the code, and responds using emojis :thumbsup:\n");
 
             // mention users if any
             string mentionedUsers = base.MentionUsers();

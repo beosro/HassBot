@@ -12,6 +12,10 @@ using System.Text;
 using System.Threading.Tasks;
 using log4net;
 using System.Reflection;
+using System.IO;
+using YamlDotNet.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace HassBotUtils
 {
@@ -48,6 +52,48 @@ namespace HassBotUtils
                 return false;
             }
             return true;
+        }
+
+        public static string Yaml2Json(string yaml) {
+            try {
+                var r = new StringReader(yaml);
+                var deserializer = new Deserializer();
+                var yamlObject = deserializer.Deserialize(r);
+
+                string json = JsonConvert.SerializeObject(yamlObject, Formatting.Indented);
+                return json;
+
+            }
+            catch (Exception e) {
+                return e.ToString();
+            }
+        }
+
+        public static string Json2Yaml(string json) {
+            try {
+                var swaggerDocument = ConvertJTokenToObject(JsonConvert.DeserializeObject<JToken>(json));
+
+                var serializer = new YamlDotNet.Serialization.Serializer();
+
+                using (var writer = new StringWriter()) {
+                    serializer.Serialize(writer, swaggerDocument);
+                    var yaml = writer.ToString();
+                    return yaml;
+                }
+            }
+            catch (Exception e) {
+                return e.ToString();
+            }
+        }
+
+        private static object ConvertJTokenToObject(JToken token) {
+            if (token is JValue)
+                return ((JValue)token).Value;
+            if (token is JArray)
+                return token.AsEnumerable().Select(ConvertJTokenToObject).ToList();
+            if (token is JObject)
+                return token.AsEnumerable().Cast<JProperty>().ToDictionary(x => x.Name, x => ConvertJTokenToObject(x.Value));
+            throw new InvalidOperationException("Unexpected token: " + token);
         }
     }
 }
