@@ -24,7 +24,8 @@ The command prefixes are `~` and `.`. That means, the commands can be executed e
 ~update     - Refreshes and updates the lookup/sitemap data. Usage: ~update
 ~yaml?      - Validates the given YAML code. Usage: ~yaml <yaml code> <@optional user1> <@optional user2>...etc
 ~welcome    - Shows welcome information. Usage: ~welcome <@optional user1> <@optional user2>...etc
-~json2yaml  - Converts JSON code to YAML. Usage json2yaml <json code>``~yaml2json  - Converts YAML code to JSON. Usage: ~yaml2json <yaml code>
+~json2yaml  - Converts JSON code to YAML. Usage `json2yaml <json code>`
+~yaml2json  - Converts YAML code to JSON. Usage: `~yaml2json <yaml code>`
 
 Tip: If you put the yaml/json code in the correct format [```yaml <code> ```], or [```json <code> ```], Hassbot will automatically validate the code, and responds using emojis :thumbsup:
 ```
