@@ -103,6 +103,7 @@
     <Compile Include="8BallModule.cs" />
     <Compile Include="AboutModule.cs" />
     <Compile Include="AFK.cs" />
+    <Compile Include="Base64Module.cs" />
     <Compile Include="BaseModule.cs" />
     <Compile Include="CommandModule.cs" />
     <Compile Include="FormatModule.cs" />

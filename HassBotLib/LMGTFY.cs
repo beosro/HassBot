@@ -13,8 +13,20 @@ namespace HassBotLib {
 
     public class LMGTFY : BaseModule {
 
+        private static readonly string ERROR_USAGE =
+            "Usage: ~lmgtfy <google search string>";
+
         [Command("lmgtfy")]
-        public async Task LetMeGoogleThatForYou([Remainder]string cmd) {
+        public async Task LetMeGoogleThatForYouAsync() {
+            var embed = new EmbedBuilder();
+            embed.WithTitle("Oooops! :sob:");
+            embed.WithColor(Color.DarkRed);
+            embed.AddInlineField("Usage", ERROR_USAGE);
+            await ReplyAsync(string.Empty, false, embed);
+        }
+
+        [Command("lmgtfy")]
+        public async Task LetMeGoogleThatForYouAsync([Remainder]string cmd) {
             var embed = new EmbedBuilder();
             embed.WithTitle(":point_up:");
             embed.WithColor(Helper.GetRandomColor());
