@@ -20,12 +20,16 @@ namespace HassBotLib {
     public class HASSBot {
         private static readonly char PREFIX_1 = '~';
         private static readonly char PREFIX_2 = '.';
+
         private static readonly string POOP = "💩";
 
         private static readonly string TOKEN = "token";
         private static readonly string MAX_LINE_LIMIT =
             @"Attention!: Please use https://www.hastebin.com to share code that is more than 10-15 lines. You have been warned, {0}!\n
               Please read rule #6 here <#331130181102206976>";
+
+        private static readonly string HASTEBIN_MESSAGE = 
+            "{0} posted a message that is more than 15 lines. It is now available at: {1}";
 
         private static readonly log4net.ILog logger =
              log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -130,10 +134,24 @@ namespace HassBotLib {
 
         private static async Task HandleLineCount(SocketUserMessage message, SocketCommandContext context) {
             if (!Utils.LineCountCheck(message.Content)) {
-                var poopEmoji = new Emoji(POOP);
-                string msxLimitMsg = AppSettingsUtil.AppSettingsString("maxLineLimitMessage", false, MAX_LINE_LIMIT);
-                await message.Channel.SendMessageAsync(string.Format(msxLimitMsg, context.User.Mention));
-                await context.Message.AddReactionAsync(poopEmoji);
+
+                string url = HassBotUtils.Utils.Post2HasteBin(message.Content);
+
+                if (url == string.Empty) {
+                    // hastebin paste failed... just warn the user, and drop a poop emoji :)
+                    var poopEmoji = new Emoji(POOP);
+                    string msxLimitMsg = AppSettingsUtil.AppSettingsString("maxLineLimitMessage", false, MAX_LINE_LIMIT);
+                    await message.Channel.SendMessageAsync(string.Format(msxLimitMsg, context.User.Mention));
+                    await context.Message.AddReactionAsync(poopEmoji);
+                }
+                else {
+                    // publish the hastebin URL link
+                    string response = string.Format(HASTEBIN_MESSAGE, context.User.Mention, url);
+                    await message.Channel.SendMessageAsync(response);
+
+                    // and, delete the original message!
+                    await context.Message.DeleteAsync();
+                }
             }
         }
 

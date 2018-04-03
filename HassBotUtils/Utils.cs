@@ -16,11 +16,15 @@ using System.IO;
 using YamlDotNet.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net;
 
 namespace HassBotUtils
 {
     public sealed class Utils
     {
+        private static readonly string HASTEBIN_POSTURL = "https://hastebin.com/documents";
+        private static readonly string HASTEBIN_RETURN = "https://hastebin.com/{0}";
+
         private static readonly log4net.ILog logger =
                     log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -97,13 +101,51 @@ namespace HassBotUtils
         }
 
         public static string Base64Encode(string plainText) {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+            try {
+                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+                return System.Convert.ToBase64String(plainTextBytes);
+            }
+            catch (Exception e) {
+                return "Could not encode! Error: " + e.Message;
+            }
         }
 
         public static string Base64Decode(string base64EncodedData) {
-            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
-            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+            try {
+                var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+                return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+            }
+            catch (Exception e) {
+                return "Could not decode! Error: " + e.Message;
+            }
+        }
+
+        public static string Post2HasteBin(string payload) {
+            if (payload.Trim() == string.Empty)
+                return string.Empty;
+
+            try {
+                var data = Encoding.ASCII.GetBytes(payload);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(HASTEBIN_POSTURL);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.ContentLength = data.Length;
+                StreamWriter requestWriter = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII);
+                using (var stream = request.GetRequestStream()) {
+                    stream.Write(data, 0, data.Length);
+                }
+
+                var response = (HttpWebResponse)request.GetResponse();
+                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+
+                dynamic stuff = JsonConvert.DeserializeObject(responseString);
+                return SafeFormatter.Format(HASTEBIN_RETURN, stuff["key"]);
+            }
+            catch (Exception e) {
+                logger.Error(e.Message);
+            }
+
+            return string.Empty;
         }
     }
 }
