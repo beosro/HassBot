@@ -15,6 +15,7 @@ using HassBotData;
 using HassBotDTOs;
 using System;
 using Discord.WebSocket;
+using HassBotUtils;
 
 namespace HassBotLib {
     public class CommandModule : BaseModule {
@@ -38,9 +39,9 @@ namespace HassBotLib {
 
         [Command("command")]
         public async Task CustomCommandAsync([Remainder]string cmd) {
-            if (!CheckModPermissions()) {
+            if (!CheckModPermissions(Context.User)) {
                 var embed = new EmbedBuilder();
-                embed.WithTitle("Success! :thumbsdown:");
+                embed.WithTitle("Oops! :thumbsdown:");
                 embed.WithColor(Color.DarkRed);
                 embed.AddInlineField("Sorry!", "You do not have permissions to create command. Only Moderators can create commands.");
                 await ReplyAsync("", false, embed);
@@ -84,23 +85,17 @@ namespace HassBotLib {
             }
         }
 
-        // Quick and Dirty way of checking for Mod permissions. TBD 
-        private bool CheckModPermissions() {
-            if (Context.User.Username == "skalavala" ||
-                Context.User.Username == "arsaboo" ||
-                Context.User.Username == "Tinkerer" ||
-                Context.User.Username == "Vasiley" ||
-                Context.User.Username == "dale3h" ||
-                Context.User.Username == "baloob" ||
-                Context.User.Username == "infamy" ||
-                Context.User.Username == "quadflight" ||
-                Context.User.Username == "ccostan" ||
-                Context.User.Username == "cogneato" ||
-                Context.User.Username == "Ludeeus" ||
-                Context.User.Username == "bassclarinetl2") {
+        // sometimes we want to give access to some users that are out side "mods" group
+        // this method works well... easy to add/remove mods in the config file.
+        private bool CheckModPermissions(SocketUser user) {
+            // get the list of mods from config file
+            string mods = AppSettingsUtil.AppSettingsString("mods", true, string.Empty);
+            string[] moderators = mods.Split(',');
+            var results = Array.FindAll(moderators, s => s.Trim().Equals(user.Username, StringComparison.OrdinalIgnoreCase));
+            if(results.Length == 1)            
                 return true;
-            }
-            return false;
+            else
+                return false;
         }
 
         [Command("list")]

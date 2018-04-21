@@ -44,7 +44,7 @@ namespace HassBotLib {
             string[] commands = {
                 "~help", "~about", "~8ball", "~list", "~command", "~lookup", "~deepsearch",
                 "~format", "~share", "~lmgtfy", "~ping", "~pong", "~update", "~yaml",
-                "~welcome", "~json2yaml", "~yaml2json", "~base64_encode", "~base64_decode"
+                "~welcome", "~json2yaml", "~yaml2json", "~base64_encode", "~base64_decode", "~codeshare"
             };
 
             buffer.Append(string.Format("Run any of the following {0} commands: ", commands.Length));

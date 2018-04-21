@@ -1,4 +1,11 @@
-﻿using System;
+﻿///////////////////////////////////////////////////////////////////////////////
+//  AUTHOR          : Suresh Kalavala
+//  DATE            : 03/15/2018
+//  FILE            : Base64Module.cs
+//  DESCRIPTION     : A class that implements ~base64_encode and ~base64_decode 
+//                    commands
+///////////////////////////////////////////////////////////////////////////////
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

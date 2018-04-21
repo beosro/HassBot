@@ -25,10 +25,11 @@ namespace HassBotLib {
         private async Task FormatCommand() {
 
             StringBuilder sb = new StringBuilder();
-            sb.Append("To format your text as code, enter three backticks on the first line, press Enter for a new line, paste your code, press Enter again for another new line, and lastly three more backticks. Here's an example:\n");
-            sb.Append("\\`\\`\\`yaml\n");
+            sb.Append("To format your text as code, enter three backticks on the first line, press Enter for a new line, paste your code, press Enter again for another new line, and lastly three more backticks. Here's an example:\n\n");
+            sb.Append("\\`\\`\\`\n");
             sb.Append("code here\n");
             sb.Append("\\`\\`\\`\n");
+            sb.Append("\nClick on the link to learn how to format: <https://raw.githubusercontent.com/skalavala/HassBot/master/format.gif>\n");
 
             // mention users if any
             string mentionedUsers = base.MentionUsers();

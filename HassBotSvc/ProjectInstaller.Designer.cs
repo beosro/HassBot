@@ -35,8 +35,8 @@ namespace HassBotSvc {
             // serviceInstaller1
             // 
             this.serviceInstaller1.Description = "Provides automated and instant help for Home Assistant users in the Discord App/Chat Room.";
-            this.serviceInstaller1.DisplayName = "Home-Assistant Discord Bot Service";
-            this.serviceInstaller1.ServiceName = "Discors HassBot Service";
+            this.serviceInstaller1.DisplayName = "Home Assistant Discord Bot Service";
+            this.serviceInstaller1.ServiceName = "Discord HassBot Service";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Manual;
 
             // 
