@@ -59,14 +59,25 @@ namespace HassBotLib {
             AFKDTO afkDTO = AFKManager.TheAFKManager.GetAFKByName(afkMessage);
             if (afkDTO == null)
                 return;
+            
+            string msg = "**{0} is away** for {1}with a message :point_right:   \"{2}\"";
+            string awayFor = string.Empty;
+            if ((DateTime.Now - afkDTO.AwayTime).Days > 0) {
+                awayFor += (DateTime.Now - afkDTO.AwayTime).Days.ToString() + "d ";
+            }
+            if ((DateTime.Now - afkDTO.AwayTime).Hours > 0) {
+                awayFor += (DateTime.Now - afkDTO.AwayTime).Hours.ToString() + "h ";
+            }
+            if ((DateTime.Now - afkDTO.AwayTime).Minutes > 0) {
+                awayFor += (DateTime.Now - afkDTO.AwayTime).Minutes.ToString() + "m ";
+            }
+            if ((DateTime.Now - afkDTO.AwayTime).Seconds > 0) {
+                awayFor += (DateTime.Now - afkDTO.AwayTime).Seconds.ToString() + "s ";
+            }
 
-            await ReplyAsync(string.Format("**{0} is away** for {1}d {2}h {3}m {4}s with a message => {5}", 
-                                            afkDTO.AwayUser, 
-                                            (DateTime.Now - afkDTO.AwayTime).Days,
-                                            (DateTime.Now - afkDTO.AwayTime).Hours,
-                                            (DateTime.Now - afkDTO.AwayTime).Minutes,
-                                            (DateTime.Now - afkDTO.AwayTime).Seconds,
-                                            afkDTO.AwayMessage));
+            string message = string.Format(msg, afkDTO.AwayUser, awayFor, afkDTO.AwayMessage);
+
+            await ReplyAsync(message);
         }
     }
 }

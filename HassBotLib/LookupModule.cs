@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using System.Xml;
 
 using HassBotData;
+using System;
+using System.Linq;
+
 namespace HassBotLib {
     public class LookupModule : BaseModule {
         private static readonly string ERROR_USAGE =
@@ -35,21 +38,7 @@ namespace HassBotLib {
         }
 
         private async Task LookupCommand(string input) {
-            XmlDocument doc = Sitemap.SiteMapXmlDocument;
-
-            input = input.Split(' ')[0];
-            StringBuilder sb = new StringBuilder();
-            string fomatted_input = "/" + input + "/";
-            foreach (XmlNode item in doc.DocumentElement.ChildNodes) {
-                if (item.InnerText.Contains(fomatted_input)) {
-                    if (item.FirstChild.InnerText.EndsWith(fomatted_input)) {
-                        sb.Append(item.FirstChild.InnerText);
-                        sb.Append("\n");
-                    }
-                }
-            }
-
-            string result = sb.ToString();
+            string result = LookupMagic(input);
             result = result.Trim();
 
             // mention users if any
@@ -59,13 +48,72 @@ namespace HassBotLib {
             if (result == string.Empty) {
                 embed.WithTitle(string.Format("Searched for '{0}': ", input));
                 embed.WithColor(Helper.GetRandomColor());
-                embed.AddInlineField("Couldn't find anything! :frowning:", "Try again with a different search string.");
+                string msg = string.Format("You may try `~deepsearch {0}`.", input);
+                embed.AddInlineField("Couldn't find it! :frowning:", msg);
             }
             else {
                 embed.WithColor(Helper.GetRandomColor());
-                embed.AddInlineField("Here is what I found: :smile:", mentionedUsers + sb.ToString());
+                embed.AddInlineField("Here is what I found: :smile:", mentionedUsers + result);
             }
             await ReplyAsync("", false, embed);
+        }
+
+        /// <summary>
+        /// Looks up a given string
+        /// </summary>
+        /// <param name="searchString">either one or multiple words</param>
+        /// <returns>URL</returns>
+        /// <logic>
+        /// It splits the input string into multiple words, parses sitemap URLs, retrieves location
+        /// of each url, and compares the words - if there is a match, it returns
+        /// </logic>
+        private static string LookupMagic(string searchString) {
+            string[] searchWords = null;
+            StringBuilder sb = new StringBuilder();
+            XmlDocument doc = Sitemap.SiteMapXmlDocument;
+
+            searchString = searchString.Replace('.', ' ').Replace('_', ' ').Replace('-', ' ').ToLower();
+            if (searchString.Contains(" "))
+                searchWords = searchString.Split(' ');
+            else
+                searchWords = new string[] { searchString };
+
+            if (null == searchWords)
+                return string.Empty;
+
+            Array.Sort(searchWords);
+
+            foreach (XmlNode item in doc.DocumentElement.ChildNodes) {
+                string location = string.Empty;
+                string[] sitemapWords = null;
+
+                string loc = item.FirstChild.InnerText;
+                if (loc.EndsWith("/")) {
+                    int index = loc.LastIndexOf("/", (loc.Length - 2));
+                    location = loc.Substring((index) + 1, ((loc.Length - index) - 2));
+                }
+                else {
+                    int index = loc.LastIndexOf("/", loc.Length);
+                    location = loc.Substring((index) + 1, ((loc.Length - index) - 1));
+                }
+
+                location = location.Replace('.', ' ').Replace('_', ' ').Replace('-', ' ').ToLower();
+                if (location.Contains(" "))
+                    sitemapWords = location.Split(' ');
+                else
+                    sitemapWords = new string[] { location };
+
+                if (null == sitemapWords)
+                    continue;
+
+                Array.Sort(sitemapWords);
+                if (string.Join("", searchWords) == string.Join("", sitemapWords)) {
+                    sb.Append(item.FirstChild.InnerText);
+                    sb.Append("\n");
+                }
+            }
+
+            return sb.ToString();
         }
 
         [Command("deepsearch")]
@@ -78,12 +126,12 @@ namespace HassBotLib {
         }
 
         [Command("deepsearch")]
-        public async Task DeepSearchAsync(string input) {
+        public async Task DeepSearchAsync([Remainder]string input) {
             XmlDocument doc = Sitemap.SiteMapXmlDocument;
 
             StringBuilder sb = new StringBuilder();
             foreach (XmlNode item in doc.DocumentElement.ChildNodes) {
-                if (item.InnerText.Contains(input)) {
+                if (item.InnerText.Contains(input.Split(' ')[0])) {
                     sb.Append("<" + item.FirstChild.InnerText + ">\n");
                 }
             }
