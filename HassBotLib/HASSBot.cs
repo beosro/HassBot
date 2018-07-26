@@ -75,9 +75,20 @@ namespace HassBotLib {
             _commands.Log += Helper.LogMessage;
             _client.UserJoined += NewUser.NewUserJoined;
             _client.MessageReceived += HandleCommandAsync;
+            _client.Disconnected += _client_Disconnected;
 
             Assembly libAssembly = Assembly.Load("HassBotLib");
             await _commands.AddModulesAsync(libAssembly);
+        }
+
+        private async Task _client_Disconnected(Exception arg) {
+            logger.Warn("The @HassBot was disconnected... will try to connect in 5 seconds.");
+
+            // wait for 5 seconds
+            await Task.Delay(5000);
+
+            // start all over again!
+            await StartInternal();
         }
 
         private async Task HandleCommandAsync(SocketMessage arg) {
@@ -179,7 +190,7 @@ namespace HassBotLib {
             foreach (var user in message.MentionedUsers) {
                 AFKDTO afkDTO = AFKManager.TheAFKManager.GetAFKById(user.Id);
                 if (afkDTO != null) {
-                    string msg = "**{0} is away** for {1}with a message :point_right:   \"{2}\"";
+                    string msg = "**{0} is away** for {1}with a message :point_right: {2}";
                     string awayFor = string.Empty;
                     if ((DateTime.Now - afkDTO.AwayTime).Days > 0) {
                         awayFor += (DateTime.Now - afkDTO.AwayTime).Days.ToString() + "d ";

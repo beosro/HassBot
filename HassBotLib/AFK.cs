@@ -60,7 +60,7 @@ namespace HassBotLib {
             if (afkDTO == null)
                 return;
             
-            string msg = "**{0} is away** for {1}with a message :point_right:   \"{2}\"";
+            string msg = "**{0} is away** for {1}with a message :point_right: {2}";
             string awayFor = string.Empty;
             if ((DateTime.Now - afkDTO.AwayTime).Days > 0) {
                 awayFor += (DateTime.Now - afkDTO.AwayTime).Days.ToString() + "d ";

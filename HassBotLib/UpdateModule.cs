@@ -9,6 +9,7 @@ using Discord.Commands;
 using System.Linq;
 using System.Threading.Tasks;
 using HassBotData;
+using System;
 
 namespace HassBotLib {
     public class UpdateModule : BaseModule {
@@ -22,15 +23,17 @@ namespace HassBotLib {
         public async Task UpdateAsync() {
             var embed = new EmbedBuilder();
             try {
-                embed.WithColor(Helper.GetRandomColor());
-                embed.AddInlineField(":thumbsup:", UPDATE_SUCCESSFUL);
                 Sitemap.ReloadData();
             }
-            catch {
+            catch{
                 embed.WithColor(Color.Red);
                 embed.AddInlineField(":cold_sweat:", UPDATE_FAILED);
+                await ReplyAsync(string.Empty, false, embed);
+                return;
             }
 
+            embed.WithColor(Helper.GetRandomColor());
+            embed.AddInlineField(":thumbsup:", UPDATE_SUCCESSFUL);
             await ReplyAsync(string.Empty, false, embed);
         }
     }

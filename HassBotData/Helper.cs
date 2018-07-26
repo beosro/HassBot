@@ -31,16 +31,21 @@ namespace HassBotData {
         }
 
         public static void DownloadSiteMap() {
-            using (var client = new WebClient()) {
+            try {
                 string sitemapUrl = AppSettingsUtil.AppSettingsString("sitemapUrl", true, string.Empty);
                 string sitemapPath = AppSettingsUtil.AppSettingsString("sitemapPath", true, string.Empty);
-                try {
-                    client.DownloadFile(sitemapUrl, sitemapPath);
-                    logger.Info(SITEMAP_UPDATED);
-                }
-                catch (Exception e) {
-                    logger.Error(ERR_DOWNLOADING, e);
-                }
+
+                // The Home Assistant web site has stopped support for TLS 1.0 - which is used bydefault.
+                // Let's force it to use TLS 1.2 - otherwise it will throw the following error:
+                // The underlying connection was closed: An unexpected error occurred on a send.
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                WebClient wc = new WebClient();
+
+                wc.DownloadFile(new Uri(sitemapUrl), sitemapPath);
+                logger.Info(SITEMAP_UPDATED);
+            }
+            catch (Exception e) {
+                logger.Error(ERR_DOWNLOADING, e);
             }
         }
     }

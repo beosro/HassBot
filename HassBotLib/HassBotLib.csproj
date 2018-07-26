@@ -107,6 +107,7 @@
     <Compile Include="BaseModule.cs" />
     <Compile Include="CodeShareModule.cs" />
     <Compile Include="CommandModule.cs" />
+    <Compile Include="ConversionModule.cs" />
     <Compile Include="FormatModule.cs" />
     <Compile Include="HASSBot.cs" />
     <Compile Include="HelpModule.cs" />
