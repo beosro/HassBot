@@ -21,11 +21,20 @@ The command prefixes are `~` and `.`. That means, the commands can be executed e
 ~share      - Shows how to share code that is more than 10 -15 lines. Usage: ~share <@optional user1> <@optional user2>...etc
 ~lmgtfy     - Googles content for you. Usage: ~lmgtfy <@optional user1> <@optional user2> <search String>
 ~ping       - Reply with pong. Use this to check if the bot is alive or not. Usage: ~ping
+~pong       - Reply with ping. Use this to check if the bot is alive or not. Usage: ~pong
 ~update     - Refreshes and updates the lookup/sitemap data. Usage: ~update
 ~yaml?      - Validates the given YAML code. Usage: ~yaml <yaml code> <@optional user1> <@optional user2>...etc
 ~welcome    - Shows welcome information. Usage: ~welcome <@optional user1> <@optional user2>...etc
 ~json2yaml  - Converts JSON code to YAML. Usage `json2yaml <json code>`
 ~yaml2json  - Converts YAML code to JSON. Usage: `~yaml2json <yaml code>`
+~base64_encode - Encodes a given string to base64 format
+~base64_decode - Decodes a given base64 encoded string
+~c2f        - Converts a given Censius value to Fahrenheit
+~f2c        - Converts a given Fahrenheit value to Celsius
+~hex2dec    - Converts a given hex value to decimal
+~dec2hex    - Converts a given decimal value to hex
+~bin2dec    - Converts a given binary value to decimal
+~dec2bin    - Converts a given decimal value to binary
 
 Tip: If you put the yaml/json code in the correct format [```yaml <code> ```], or [```json <code> ```], Hassbot will automatically validate the code, and responds using emojis :thumbsup:
 ```
