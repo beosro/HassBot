@@ -24,6 +24,10 @@ namespace HassBotLib {
             "Usage: hex2dec <decimal value>";
         private static readonly string DEC2HEX_ERROR_USAGE =
             "Usage: dec2hex <hex value>";
+        private static readonly string BIN2DEC_ERROR_USAGE =
+            "Usage: bin2dec <binary value>";
+        private static readonly string DEC2BIN_ERROR_USAGE =
+            "Usage: dec2bin <decimal value>";
 
         [Command("c2f")]
         public async Task CelsiusToFahrenheit() {
@@ -58,6 +62,24 @@ namespace HassBotLib {
             embed.WithTitle("Oooops! :sob:");
             embed.WithColor(Color.DarkRed);
             embed.AddInlineField("Usage", DEC2HEX_ERROR_USAGE);
+            await ReplyAsync(string.Empty, false, embed);
+        }
+
+        [Command("dec2bin")]
+        public async Task Dec2Bin() {
+            var embed = new EmbedBuilder();
+            embed.WithTitle("Oooops! :sob:");
+            embed.WithColor(Color.DarkRed);
+            embed.AddInlineField("Usage", DEC2BIN_ERROR_USAGE);
+            await ReplyAsync(string.Empty, false, embed);
+        }
+
+        [Command("bin2dec")]
+        public async Task Bin2Dec() {
+            var embed = new EmbedBuilder();
+            embed.WithTitle("Oooops! :sob:");
+            embed.WithColor(Color.DarkRed);
+            embed.AddInlineField("Usage", BIN2DEC_ERROR_USAGE);
             await ReplyAsync(string.Empty, false, embed);
         }
 
@@ -144,6 +166,42 @@ namespace HassBotLib {
             await ReplyAsync("", false, embed);
         }
 
+        [Command("dec2bin")]
+        public async Task Dec2Bin([Remainder]string cmd) {
+            var embed = new EmbedBuilder();
+            embed.WithTitle(":1234:");
+            embed.WithColor(Helper.GetRandomColor());
+
+            // mention users if any
+            string mentionedUsers = GetMentionedUsers(ref cmd);
+            int decValue = 0;
+            try {
+                decValue = int.Parse(cmd.Trim());
+            }
+            catch {
+                decValue = 0;
+            }
+
+            string binValue = Decimal2Binary(decValue);
+            embed.AddInlineField("Decimal To Binary",
+                string.Format("{0} '{1}' in decimal = '{2}' in binary", mentionedUsers, cmd.Trim(), binValue));
+            await ReplyAsync("", false, embed);
+        }
+
+        [Command("bin2dec")]
+        public async Task Bin2Dec([Remainder]string cmd) {
+            var embed = new EmbedBuilder();
+            embed.WithTitle(":1234:");
+            embed.WithColor(Helper.GetRandomColor());
+
+            // mention users if any
+            string mentionedUsers = GetMentionedUsers(ref cmd);
+            int decValue = Binary2Decimal(cmd.Trim());
+            embed.AddInlineField("Decimal To Binary",
+                string.Format("{0} '{1}' in binary = '{2}' in decimal", mentionedUsers, cmd.Trim(), decValue));
+            await ReplyAsync("", false, embed);
+        }
+
         private string GetMentionedUsers(ref string cmd) {
             string mentionedUsers = base.MentionUsers();
             if (string.Empty != mentionedUsers) {
@@ -175,5 +233,24 @@ namespace HassBotLib {
             return hexValue;
         }
 
+        public static string Decimal2Binary(int decValue) {
+            try {
+                string binary = Convert.ToString(decValue, 2);
+                return binary;
+
+            }
+            catch {
+                return "Unable to convert!";
+            }
+        }
+
+        public static int Binary2Decimal(string binValue) {
+            try {
+                return Convert.ToInt32(binValue, 2);
+            }
+            catch {
+                return 0;
+            }
+        }
     }
 }
