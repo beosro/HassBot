@@ -25,7 +25,7 @@ namespace HassBotLib {
 
         private static readonly string TOKEN = "token";
         private static readonly string MAX_LINE_LIMIT =
-            @"Attention!: Please use https://paste.ubuntu.com/ to share code that is more than 10-15 lines. You have been warned, {0}!\n
+            @"Attention!: Please use https://paste.ubuntu.com to share code that is more than 10-15 lines. You have been warned, {0}!\n
               Please read rule #6 here <#331130181102206976>";
 
         private static readonly string HASTEBIN_MESSAGE = 
