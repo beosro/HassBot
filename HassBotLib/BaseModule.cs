@@ -19,5 +19,14 @@ namespace HassBotLib {
 
             return mentionedUsers;
         }
+
+        protected string MentionChannels() {
+            string mentionedChannels = string.Empty;
+            foreach (var channel in Context.Message.MentionedChannels) {
+                mentionedChannels += $"{channel.Id} ";
+            }
+
+            return mentionedChannels.TrimEnd();
+        }
     }
 }

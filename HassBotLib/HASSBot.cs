@@ -25,11 +25,11 @@ namespace HassBotLib {
 
         private static readonly string TOKEN = "token";
         private static readonly string MAX_LINE_LIMIT =
-            @"Attention!: Please use https://paste.ubuntu.com to share code that is more than 10-15 lines. You have been warned, {0}!\n
+            @"Attention!: Please use https://paste.ubuntu.com to share code or message that is more than 10-15 lines. You have been warned, {0}!\n
               Please read rule #6 here <#331130181102206976>";
 
         private static readonly string HASTEBIN_MESSAGE = 
-            "{0} posted a message that is more than 15 lines. It is now available at: {1}";
+            "{0} being {1}, posted a message that is more than 15 lines. It is now available at: {2}";
 
         private static readonly log4net.ILog logger =
              log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -157,7 +157,8 @@ namespace HassBotLib {
                 }
                 else {
                     // publish the hastebin URL link
-                    string response = string.Format(HASTEBIN_MESSAGE, context.User.Mention, url);
+                    string adjective = HassBotUtils.Utils.GetFlippinAdjective();
+                    string response = string.Format(HASTEBIN_MESSAGE, context.User.Mention, adjective, url);
                     await message.Channel.SendMessageAsync(response);
 
                     // and, delete the original message!

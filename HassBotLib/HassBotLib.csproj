@@ -103,6 +103,7 @@
     <Compile Include="8BallModule.cs" />
     <Compile Include="AboutModule.cs" />
     <Compile Include="AFK.cs" />
+    <Compile Include="AsModule.cs" />
     <Compile Include="Base64Module.cs" />
     <Compile Include="BaseModule.cs" />
     <Compile Include="CodeShareModule.cs" />
@@ -116,7 +117,6 @@
     <Compile Include="NewUser.cs" />
     <Compile Include="PingModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReplyModule.cs" />
     <Compile Include="ShareModule.cs" />
     <Compile Include="UpdateModule.cs" />
     <Compile Include="Helper.cs" />

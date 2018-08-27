@@ -25,8 +25,15 @@ namespace HassBotUtils
         private static readonly string HASTEBIN_POSTURL = "https://hastebin.com/documents";
         private static readonly string HASTEBIN_RETURN = "https://hastebin.com/{0}";
 
+        private static readonly Random _random = new Random();
         private static readonly log4net.ILog logger =
                     log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static string GetFlippinAdjective() {
+            string[] adjectives = new string[] { "insensitive", "heartless", "inconsiderate", "thoughtless", "thick-skinned", "hard-hearted", "cold-bloded", "uncaring", "mean-spirited", "unconcerned", "unsympathetic", "unkind", "callous", "cruel", "merciless", "pitiless" };
+            int index = _random.Next(adjectives.Length);
+            return adjectives[index];
+        }
 
         public static bool LineCountCheck(string message) {
             if (string.Empty == message)
