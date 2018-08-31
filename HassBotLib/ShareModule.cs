@@ -22,7 +22,7 @@ namespace HassBotLib {
         }
 
         private async Task ShareCommand() {
-            string s = "Please use https://www.hastebin.com to share code.";
+            string s = "Please use https://www.hastebin.com/ or https://paste.ubuntu.com/ to share code.";
 
             // mentioned users
             string mentionedUsers = base.MentionUsers();
