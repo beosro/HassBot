@@ -12,6 +12,8 @@ using HassBotDTOs;
 using HassBotUtils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -146,25 +148,41 @@ namespace HassBotLib {
         private static async Task HandleLineCount(SocketUserMessage message, SocketCommandContext context) {
             if (!Utils.LineCountCheck(message.Content)) {
 
-                string url = HassBotUtils.Utils.Post2HasteBin(message.Content);
-
+                string url = await Paste2Ubuntu(message.Content, context.User.Username);
                 if (url == string.Empty) {
-                    // hastebin paste failed... just warn the user, and drop a poop emoji :)
-                    var poopEmoji = new Emoji(POOP);
-                    string msxLimitMsg = AppSettingsUtil.AppSettingsString("maxLineLimitMessage", false, MAX_LINE_LIMIT);
-                    await message.Channel.SendMessageAsync(string.Format(msxLimitMsg, context.User.Mention));
-                    await context.Message.AddReactionAsync(poopEmoji);
+                    // untutu paste failed... try hastebin
+                    url = HassBotUtils.Utils.Post2HasteBin(message.Content);
+                    if (url == string.Empty) {
+                        // hastebin paste ALSO failed... just warn the user, and drop a poop emoji :)
+                        var poopEmoji = new Emoji(POOP);
+                        string msxLimitMsg = AppSettingsUtil.AppSettingsString("maxLineLimitMessage", false, MAX_LINE_LIMIT);
+                        await message.Channel.SendMessageAsync(string.Format(msxLimitMsg, context.User.Mention));
+                        await context.Message.AddReactionAsync(poopEmoji);
+                        return;
+                    }
                 }
-                else {
-                    // publish the hastebin URL link
-                    string adjective = HassBotUtils.Utils.GetFlippinAdjective();
-                    string response = string.Format(HASTEBIN_MESSAGE, context.User.Mention, adjective, url);
-                    await message.Channel.SendMessageAsync(response);
 
-                    // and, delete the original message!
-                    await context.Message.DeleteAsync();
-                }
+                // publish the URL link
+                string adjective = HassBotUtils.Utils.GetFlippinAdjective();
+                string response = string.Format(HASTEBIN_MESSAGE, context.User.Mention, adjective, url);
+                await message.Channel.SendMessageAsync(response);
+
+                // and, delete the original message!
+                await context.Message.DeleteAsync();
             }
+        }
+
+        private async static Task<string> Paste2Ubuntu(string payload, string poster) {
+            Dictionary<string, string> values = new Dictionary<string, string>();
+            HttpClient client = new HttpClient();
+
+            values.Add("poster", poster);
+            values.Add("expiration", "day");
+            values.Add("syntax", "text");
+            values.Add("content", payload);
+
+            var response = await client.PostAsync("https://paste.ubuntu.com/", new FormUrlEncodedContent(values));
+            return response.RequestMessage.RequestUri.ToString();
         }
 
         private static async Task HandleCustomCommand(string command, SocketUserMessage message, string mentionedUsers, IResult result) {
