@@ -210,5 +210,21 @@ namespace HassBotUtils
 
             return newUrl;
         }
+
+        public static string DownloadURLString(string url) {
+            string returnValue = string.Empty;
+            try {
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                WebClient wc = new WebClient();
+                wc.Headers.Add("user-agent", "HassBot by @skalavala");
+                returnValue = wc.DownloadString(new Uri(url));
+            }
+            catch (Exception e) {
+                logger.Error(string.Format("Error occured downloading url {0}. See the call stack below: ", url));
+                logger.Error(e);
+                returnValue = string.Empty;
+            }
+            return returnValue;
+        }
     }
 }

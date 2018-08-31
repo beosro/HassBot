@@ -12,14 +12,14 @@ using System.Linq;
 using Discord;
 
 namespace HassBotLib {
-    public class Converter : BaseModule {
+    public class ConverterModule : BaseModule {
 
         private static readonly string ERROR_USAGE_YAML2JSON = 
             "Usage: ~yaml2json <yaml code>";
         private static readonly string ERROR_USAGE_JSON2YAML =
             "Usage: ~json2yaml <json code>";
 
-        public Converter() {
+        public ConverterModule() {
 
         }
 

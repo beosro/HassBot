@@ -120,7 +120,8 @@
     <Compile Include="ShareModule.cs" />
     <Compile Include="UpdateModule.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="Converter.cs" />
+    <Compile Include="ConverterModule.cs" />
+    <Compile Include="VersionModule.cs" />
     <Compile Include="YamlModule.cs" />
     <Compile Include="WelcomeModule.cs" />
   </ItemGroup>
