@@ -9,12 +9,15 @@ using System.Configuration;
 using System.Xml;
 using HassBotUtils;
 using System.Text;
+using System.Reflection;
 
 namespace HassBotData {
 
     public sealed class Sitemap {
         private static readonly Lazy<Sitemap> lazy = new Lazy<Sitemap>(() => new Sitemap());
         private static readonly XmlDocument doc = new XmlDocument();
+        private static readonly log4net.ILog logger =
+            log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private Sitemap() {
             // private .ctor
@@ -34,6 +37,7 @@ namespace HassBotData {
             string siteMap = AppSettingsUtil.AppSettingsString("sitemapPath", true, string.Empty);
             Helper.DownloadSiteMap();
             doc.Load(siteMap);
+            logger.Info("Sitemap data refreshed successfully!");
         }
 
         public static Sitemap Instance {

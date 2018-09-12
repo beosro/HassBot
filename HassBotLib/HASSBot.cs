@@ -17,6 +17,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace HassBotLib {
     public class HASSBot {
@@ -40,6 +41,8 @@ namespace HassBotLib {
         private CommandService _commands;
         private IServiceProvider _services;
 
+        private System.Timers.Timer siteMapRefreshTimer = null;
+
         public async Task StartBotAsync() {
             await StartInternal();
         }
@@ -48,11 +51,25 @@ namespace HassBotLib {
             await StartInternal();
         }
 
+        private void SiteMapRefreshTimer_Elapsed(object sender, ElapsedEventArgs e) {
+            // reload sitemap data
+            Sitemap.ReloadData();
+        }
+
         public async void Stop() {
+            siteMapRefreshTimer.Enabled = false;
             await _client.LogoutAsync();
         }
 
         private async Task StartInternal() {
+
+            // when the bot starts, start hourly timer to refresh sitemap
+            if (null == siteMapRefreshTimer) {
+                siteMapRefreshTimer = new System.Timers.Timer(60 * 60 * 1000);
+                siteMapRefreshTimer.Elapsed += SiteMapRefreshTimer_Elapsed;
+            }
+            siteMapRefreshTimer.Enabled = true;
+
             // create client and command objects
             _client = new DiscordSocketClient();
             _commands = new CommandService();
@@ -84,6 +101,7 @@ namespace HassBotLib {
         }
 
         private async Task _client_Disconnected(Exception arg) {
+            siteMapRefreshTimer.Enabled = false;
             logger.Warn("The @HassBot was disconnected... will try to connect in 5 seconds.");
 
             // wait for 5 seconds
@@ -146,13 +164,15 @@ namespace HassBotLib {
         }
 
         private static async Task HandleLineCount(SocketUserMessage message, SocketCommandContext context) {
-            if (!Utils.LineCountCheck(message.Content)) {
 
-                string url = await Paste2Ubuntu(message.Content, context.User.Username);
+            if (!Utils.LineCountCheck(message.Content)) {
+                string url = await HassBotUtils.Utils.Paste2Ubuntu(message.Content, context.User.Username);
                 if (url == string.Empty) {
+
                     // untutu paste failed... try hastebin
-                    url = HassBotUtils.Utils.Post2HasteBin(message.Content);
+                    url = HassBotUtils.Utils.Paste2HasteBin(message.Content);
                     if (url == string.Empty) {
+
                         // hastebin paste ALSO failed... just warn the user, and drop a poop emoji :)
                         var poopEmoji = new Emoji(POOP);
                         string msxLimitMsg = AppSettingsUtil.AppSettingsString("maxLineLimitMessage", false, MAX_LINE_LIMIT);
@@ -170,19 +190,6 @@ namespace HassBotLib {
                 // and, delete the original message!
                 await context.Message.DeleteAsync();
             }
-        }
-
-        private async static Task<string> Paste2Ubuntu(string payload, string poster) {
-            Dictionary<string, string> values = new Dictionary<string, string>();
-            HttpClient client = new HttpClient();
-
-            values.Add("poster", poster);
-            values.Add("expiration", "day");
-            values.Add("syntax", "text");
-            values.Add("content", payload);
-
-            var response = await client.PostAsync("https://paste.ubuntu.com/", new FormUrlEncodedContent(values));
-            return response.RequestMessage.RequestUri.ToString();
         }
 
         private static async Task HandleCustomCommand(string command, SocketUserMessage message, string mentionedUsers, IResult result) {

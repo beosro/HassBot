@@ -17,11 +17,13 @@ using YamlDotNet.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net;
+using System.Net.Http;
 
 namespace HassBotUtils
 {
     public sealed class Utils
     {
+        private static readonly string PASTE2UBUNTU_URL = "https://paste.ubuntu.com/";
         private static readonly string HASTEBIN_POSTURL = "https://hastebin.com/documents";
         private static readonly string HASTEBIN_RETURN = "https://hastebin.com/{0}";
 
@@ -127,7 +129,20 @@ namespace HassBotUtils
             }
         }
 
-        public static string Post2HasteBin(string payload) {
+        public async static Task<string> Paste2Ubuntu(string payload, string poster) {
+            Dictionary<string, string> formData = new Dictionary<string, string>();
+            HttpClient client = new HttpClient();
+
+            formData.Add("poster", poster);
+            formData.Add("expiration", "day"); // keep it for a day on their server
+            formData.Add("syntax", "text");
+            formData.Add("content", payload);
+            
+            var response = await client.PostAsync(PASTE2UBUNTU_URL, new FormUrlEncodedContent(formData));
+            return response.RequestMessage.RequestUri.ToString();
+        }
+
+        public static string Paste2HasteBin(string payload) {
             if (payload.Trim() == string.Empty)
                 return string.Empty;
 
