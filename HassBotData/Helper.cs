@@ -20,8 +20,8 @@ namespace HassBotData {
         private static readonly string ERR_DOWNLOADING =
             "Error downloading Home Assistant sitemap file.";
 
-        private static readonly string SITEMAP_UPDATED =
-            "Updated sitemap file successfully.";
+        //private static readonly string SITEMAP_UPDATED =
+        //    "Updated sitemap file successfully.";
 
         private static readonly log4net.ILog logger =
             log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -42,7 +42,7 @@ namespace HassBotData {
                 WebClient wc = new WebClient();
 
                 wc.DownloadFile(new Uri(sitemapUrl), sitemapPath);
-                logger.Info(SITEMAP_UPDATED);
+                // logger.Info(SITEMAP_UPDATED);
             }
             catch (Exception e) {
                 logger.Error(ERR_DOWNLOADING, e);

@@ -37,7 +37,6 @@ namespace HassBotData {
             string siteMap = AppSettingsUtil.AppSettingsString("sitemapPath", true, string.Empty);
             Helper.DownloadSiteMap();
             doc.Load(siteMap);
-            logger.Info("Sitemap data refreshed successfully!");
         }
 
         public static Sitemap Instance {
